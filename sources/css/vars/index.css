@@ -6,15 +6,26 @@
     
     --ex-one: #5d89ce; /* exclusive color: blue`full */
     --ex-two: #1649aa; /* exclusive color: sea`full */
-    --ex-three: #ce5dc0; /* exclusive color: pink */
-    --ex-four: #a03092; /* exclusive color: violet */
+    --ex-three: #c57847; /* exclusive color: pink */
+    --ex-four: #a76135; /* exclusive color: violet */
     --ex-five: #333; /* exclusive color: gray */
     --ex-six: #969696; /* exclusive color: gray */
     --ex-seven: #f0f0f0; /* exclusive color: text-hover */
 
     --border: 1px solid var(--ex-five);
-    --border-rad: 20px;
+    --border-rad: clamp(20px, 5vw, 30px);
 
     --ts-title: clamp(40px, 3vw, 80px);
     --ts-p: clamp(20px, 3vw, 32px); 
+    --ts-b: clamp(12px, 3vw, 16px); 
+}
+
+.span-1 {
+    font-family: var(--montserrat);
+    color: var(--ex-one);
+}
+
+.span-2 {
+    font-family: var(--montserrat);
+    color: var(--ex-four);
 }
