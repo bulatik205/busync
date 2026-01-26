@@ -15,9 +15,9 @@
     --border: 1px solid var(--ex-five);
     --border-rad: clamp(20px, 5vw, 30px);
 
-    --ts-title: clamp(40px, 3vw, 80px);
+    --ts-title: clamp(40px, 5vw, 52px);
     --ts-p: clamp(20px, 3vw, 32px); 
-    --ts-b: clamp(12px, 3vw, 16px); 
+    --ts-b: clamp(12px, 3vw, 20px); 
 }
 
 .span-1 {

@@ -18,7 +18,7 @@
             <div class="header--body--nav">
                 <nav class="header--body--nav__nav">
                     <ul class="nav--ul">
-                        <li class="nav--ul__li"><a href="">Профиль</a></li> <!-- todo: имя из БД -->
+                        <li class="nav--ul__li"><a href="login/">Профиль</a></li> <!-- todo: имя из БД -->
                     </ul>
                 </nav>
             </div>

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url(../../base.css);
+@import url("../../base.css");
 * {
   font-family: var(--sans-code);
   box-sizing: border-box;
