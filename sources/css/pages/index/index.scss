@@ -109,12 +109,17 @@ main {
             border-right: 10px solid var(--ex-two);
             background-color: var(--ex-one);
             margin-left: auto;
+            font-weight: 600;
+            font-size: var(--ts-p);
         }
 
         &--content.l {
             border-left: 10px solid var(--ex-four);
             background-color: var(--ex-three);
+            padding: 20px 40px;
             margin-right: auto;
+            font-weight: 600;
+            font-size: var(--ts-p);
         }
 
         &--content.с {
