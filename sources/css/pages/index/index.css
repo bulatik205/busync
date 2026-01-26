@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(../../base.css);
 * {
   font-family: var(--sans-code);
@@ -53,7 +54,7 @@ main {
   width: 100%;
   max-width: 2000px;
   min-height: 400px;
-  max-height: 900px;
+  max-height: 1000px;
 }
 main .main--body {
   width: 100%;
@@ -82,7 +83,8 @@ main .main--body--content {
   padding: 20px 5px;
   max-width: 1200px;
 }
-main .main--body--content p {
+main .main--body--content p,
+main .main--body--content a {
   margin: 10px;
   font-weight: 600;
   font-size: var(--ts-p);
@@ -96,6 +98,19 @@ main .main--body--content.l {
   border-left: 10px solid var(--ex-four);
   background-color: var(--ex-three);
   margin-right: auto;
+}
+main .main--body--content.с {
+  border-right: 10px solid var(--ex-four);
+  border-left: 10px solid var(--ex-four);
+  background-color: var(--ex-three);
+  margin: 0 auto;
+  padding: 20px 40px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--ts-p);
+}
+main .main--body--content.с:hover {
+  text-decoration: underline;
 }
 
 nav {
