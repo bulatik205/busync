@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+$csrf_token = bin2hex(random_bytes(16));
+$_SESSION['csrf_token'] = $csrf_token;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +21,9 @@
                 <h1>Вход</h1>
             </div>
 
-            <form action="" method="post">
+            <form action="../handlers/login/index.php" method="post">
+                <input type="text" style="display: none" value="<?php echo htmlspecialchars($csrf_token) ?>" name="csrf_token">
+
                 <div class="form--element">
                     <label for="username">Логин</label>
                     <input type="text" name="username" id="username" required minlength="4" maxlength="128">
