@@ -3,6 +3,25 @@ session_start();
 
 $csrf_token = bin2hex(random_bytes(16));
 $_SESSION['csrf_token'] = $csrf_token;
+
+$errorMessages = [
+    'csrf_token_empty' => 'Сессия кончилась. Обновите страницу',
+    'csrf_token_invalid' => 'Сессия кончилась. Обновите страницу',
+    'username_empty' => 'Введите логин',
+    'password_empty' => 'Введите пароль',
+    'username_short' => 'Логин короткий (нужно от 4)',
+    'username_long' => 'Логин длинный (нужно до 50)',
+    'password_short' => 'Пароль короткий (нужно от 8)',
+    'password_long' => 'Пароль длинный (нужно до 72)',
+    'username_invalid' => 'Недопустимые символы в логине',
+    'username_exists' => 'Логин занят',
+    'registration_failed' => 'Неизвестная ошибка',
+    'server_error' => 'Попробуйте позже'
+];
+
+$errorWithQuery = isset($_GET['error']) 
+    ? ($errorMessages[$_GET['error']] ?? 'Неизвестная ошибка')
+    : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +39,12 @@ $_SESSION['csrf_token'] = $csrf_token;
             <div class="main--body--header">
                 <h1>Регистрация</h1>
             </div>
+
+            <?php if ($errorWithQuery): ?>
+                <div class="main--body--errors">
+                    <p><?php echo htmlspecialchars($errorWithQuery) ?></p>
+                </div>
+            <?php endif ?>
 
             <form action="../handlers/reg/index.php" method="post">
                 <input type="text" style="display: none" value="<?php echo htmlspecialchars($csrf_token) ?>" name="csrf_token">
@@ -41,6 +66,8 @@ $_SESSION['csrf_token'] = $csrf_token;
             <p>Забыли пароль? <a href="../ops/">Восстановить</a></p>
         </div>
     </main>
+
+    <script src="../sources/js/login-reg/clearQuery.js"></script>
 </body>
 
 </html>

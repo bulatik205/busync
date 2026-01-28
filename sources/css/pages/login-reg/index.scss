@@ -35,6 +35,18 @@ body {
                 }
             }
 
+            &--errors {
+                padding: 10px;
+                border-radius: 15px;
+                background-color: #ff9090;
+                border: var(--border);
+                margin-bottom: 20px;
+
+                p {
+                    font-size: var(--ts-b);
+                }
+            }
+
             form {
                 display: flex;
                 flex-direction: column;

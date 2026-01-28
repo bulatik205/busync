@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 require_once '../../config/config.php';
 
@@ -32,22 +29,12 @@ function validateInputs(): bool
         return false;
     }
 
-    if (strlen($_POST['password']) < 6) {
-        header('Location: ../../login?error=password_short');
-        return false;
-    }
-
-    if (strlen($_POST['username']) < 4) {
-        header('Location: ../../login?error=username_short');
-        return false;
-    }
-
-    if (strlen($_POST['password']) > 128) {
+    if (strlen($_POST['password']) > 72) {
         header('Location: ../../login?error=password_long');
         return false;
     }
 
-    if (strlen($_POST['username']) > 128) {
+    if (strlen($_POST['username']) > 50) {
         header('Location: ../../login?error=username_long');
         return false;
     }

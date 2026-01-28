@@ -31,6 +31,16 @@ body main .main--body--header h1 {
   margin: 0;
   margin-bottom: 20px;
 }
+body main .main--body--errors {
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #ff9090;
+  border: var(--border);
+  margin-bottom: 20px;
+}
+body main .main--body--errors p {
+  font-size: var(--ts-b);
+}
 body main .main--body form {
   display: flex;
   flex-direction: column;
