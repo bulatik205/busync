@@ -48,12 +48,12 @@ $errorWithQuery = isset($_GET['error'])
 
                 <div class="form--element">
                     <label for="username">Логин</label>
-                    <input type="text" name="username" id="username" required minlength="4" maxlength="128">
+                    <input type="text" name="username" id="username" required minlength="4" maxlength="50">
                 </div>
 
                 <div class="form--element">
                     <label for="password">Пароль</label>
-                    <input type="password" name="password" id="password" required minlength="6" maxlength="128">
+                    <input type="password" name="password" id="password" required minlength="6" maxlength="72">
                 </div>
 
                 <button type="submit">Войти</button>
