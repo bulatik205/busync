@@ -1,6 +1,7 @@
 <?php
 require_once "logger.php";
 require_once "pathGet.php";
+require_once "verificationUser.php";
 
 # base configuration on MAMP (https://www.mamp.info/)
 $main_host = "localhost"; 
