@@ -1,5 +1,12 @@
 <?php
 session_start();
+require_once '../config/config.php';
+define('BASE_PATH', getBackPath(__DIR__));
+
+if (verifyAuth($pdo) !== false) {
+    header('Location: ' . BASE_PATH . 'dashboard/');
+    exit;
+}
 
 $csrf_token = bin2hex(random_bytes(16));
 $_SESSION['csrf_token'] = $csrf_token;
@@ -13,7 +20,8 @@ $errorMessages = [
     'password_long' => 'Пароль длинный (нужно до 72)',
     'user_not_found' => 'Неверный логин или пароль',
     'wrong_password' => 'Неверный логин или пароль', 
-    'server_error' => 'Попробуйте позже'
+    'server_error' => 'Попробуйте позже',
+    'session_dont_exist' => 'Вы вышли из аккаунта'
 ];
 
 $errorWithQuery = isset($_GET['error']) 

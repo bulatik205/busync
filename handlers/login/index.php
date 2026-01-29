@@ -3,6 +3,11 @@ session_start();
 require_once '../../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
+if (verifyAuth($pdo) !== false) {
+    header('Location: ' . BASE_PATH . 'dashboard/');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_PATH . 'login/');
     exit;
@@ -48,7 +53,7 @@ if (!validateInputs()) {
 }
 
 try {
-    $stmtCheckUser = $pdo->prepare("SELECT * FROM `users` WHERE `login` = ?");
+    $stmtCheckUser = $pdo->prepare("SELECT * FROM `users` WHERE `username` = ?");
     $stmtCheckUser->execute([$_POST['username']]);
     $stmtCheckUser = $stmtCheckUser->fetch();
 
@@ -62,9 +67,12 @@ try {
         exit;
     }
 
-    $_SESSION['user_id'] = $stmtCheckUser['id'];
-    $_SESSION['user_hash'] = $stmtCheckUser['hash'];
-    $_SESSION['user_login'] = $stmtCheckUser['login'];
+    $sessionToken = bin2hex(random_bytes(16));
+    $stmtRefreshToken = $pdo->prepare("UPDATE `users` SET `session_token` = ? WHERE `id` = ?");
+    $stmtRefreshToken -> execute([$sessionToken, $stmtCheckUser['id']]);
+
+    $_SESSION['username'] = $stmtCheckUser['username'];
+    $_SESSION['session_token'] = $sessionToken;
 
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;

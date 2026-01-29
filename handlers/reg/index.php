@@ -3,6 +3,11 @@ session_start();
 require_once '../../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
+if (verifyAuth($pdo) !== false) {
+    header('Location: ' . BASE_PATH . 'dashboard/');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_PATH . 'reg/');
     exit;
@@ -66,7 +71,7 @@ if (!validateInputs()) {
 }
 
 try {
-    $stmtCheckUsername = $pdo->prepare("SELECT id FROM `users` WHERE `login` = ?");
+    $stmtCheckUsername = $pdo->prepare("SELECT id FROM `users` WHERE `username` = ?");
     $stmtCheckUsername->execute([trim($_POST['username'])]);
     $existingUser = $stmtCheckUsername->fetch();
 
@@ -75,21 +80,21 @@ try {
         exit;
     }
 
-    $sessionHash = bin2hex(random_bytes(16));
+    $sessionToken = bin2hex(random_bytes(16));
     $username = trim($_POST['username']);
     $passwordHash = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
     
     $stmtCreateNewUser = $pdo->prepare(
-        "INSERT INTO `users` (`hash`, `login`, `password`) 
+        "INSERT INTO `users` (`session_token`, `username`, `password_hash`) 
          VALUES (?, ?, ?)"
     );
     
-    $stmtCreateNewUser->execute([$sessionHash, $username, $passwordHash]);
+    $stmtCreateNewUser->execute([$sessionToken, $username, $passwordHash]);
     $lastInsertId = $pdo->lastInsertId();
 
     if (!empty($lastInsertId)) {
-        $_SESSION['user_id'] = $lastInsertId;
-        $_SESSION['user_login'] = $username;
+        $_SESSION['username'] = $_POST['username'];
+        $_SESSION['session_token'] = $sessionToken;
         
         unset($_SESSION['csrf_token']);
         

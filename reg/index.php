@@ -1,5 +1,12 @@
 <?php
 session_start();
+require_once '../config/config.php';
+define('BASE_PATH', getBackPath(__DIR__));
+
+if (verifyAuth($pdo) !== false) {
+    header('Location: ' . BASE_PATH . 'dashboard/');
+    exit;
+}
 
 $csrf_token = bin2hex(random_bytes(16));
 $_SESSION['csrf_token'] = $csrf_token;
