@@ -1,21 +1,22 @@
 <?php
 session_start();
 require_once '../../config/config.php';
+define('BASE_PATH', getBackPath(__DIR__));
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../reg/');
+    header('Location: ' . BASE_PATH . 'reg/');
     exit;
 }
 
 function validateInputs(): bool
 {
     if (empty($_POST['csrf_token'])) {
-        header('Location: ../../reg?error=csrf_token_empty');
+        header('Location: ' . BASE_PATH . 'reg?error=csrf_token_empty');
         return false;
     }
 
     if (empty($_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        header('Location: ../../reg?error=csrf_token_invalid');
+        header('Location: ' . BASE_PATH . 'reg?error=csrf_token_invalid');
         return false;
     }
 
@@ -23,37 +24,37 @@ function validateInputs(): bool
     $password = $_POST['password'] ?? '';
 
     if (empty($username)) {
-        header('Location: ../../reg?error=username_empty');
+        header('Location: ' . BASE_PATH . 'reg?error=username_empty');
         return false;
     }
 
     if (empty($password)) {
-        header('Location: ../../reg?error=password_empty');
+        header('Location: ' . BASE_PATH . 'reg?error=password_empty');
         return false;
     }
 
     if (strlen($username) < 4) {
-        header('Location: ../../reg?error=username_short');
+        header('Location: ' . BASE_PATH . 'reg?error=username_short');
         return false;
     }
 
     if (strlen($username) > 50) { 
-        header('Location: ../../reg?error=username_long');
+        header('Location: ' . BASE_PATH . 'reg?error=username_long');
         return false;
     }
 
     if (strlen($password) < 8) { 
-        header('Location: ../../reg?error=password_short');
+        header('Location: ' . BASE_PATH . 'reg?error=password_short');
         return false;
     }
 
     if (strlen($password) > 72) { 
-        header('Location: ../../reg?error=password_long');
+        header('Location: ' . BASE_PATH . 'reg?error=password_long');
         return false;
     }
 
     if (!preg_match('/^[a-zA-Z0-9_.-]+$/', $username)) {
-        header('Location: ../../reg?error=username_invalid');
+        header('Location: ' . BASE_PATH . 'reg?error=username_invalid');
         return false;
     }
 
@@ -70,7 +71,7 @@ try {
     $existingUser = $stmtCheckUsername->fetch();
 
     if ($existingUser) {
-        header('Location: ../../reg?error=username_exists');
+        header('Location: ' . BASE_PATH . 'reg?error=username_exists');
         exit;
     }
 
@@ -95,7 +96,7 @@ try {
         header('Location: /dashboard');
         exit;
     } else {
-        header('Location: ../../reg?error=registration_failed');
+        header('Location: ' . BASE_PATH . 'reg?error=registration_failed');
         exit;
     }
     
@@ -104,6 +105,6 @@ try {
     exit;
 } catch (Exception $e) {
     databaseLog($e->getMessage(), __DIR__);
-    header('Location: ../../reg?error=server_error');
+    header('Location: ' . BASE_PATH . 'reg?error=server_error');
     exit;
 }
