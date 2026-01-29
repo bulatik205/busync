@@ -1,5 +1,6 @@
 <?php
 require_once "logger.php";
+require_once "pathGet.php";
 
 # base configuration on MAMP (https://www.mamp.info/)
 $main_host = "localhost"; 
