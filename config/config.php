@@ -1,7 +1,6 @@
 <?php
 require_once "logger.php";
 require_once "pathGet.php";
-require_once "verificationUser.php";
 
 # base configuration on MAMP (https://www.mamp.info/)
 $main_host = "localhost"; 
@@ -19,4 +18,6 @@ $pdo = new PDO(
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]
 );
+
+require_once "verificationUser.php";
 ?>
