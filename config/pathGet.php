@@ -26,5 +26,3 @@ function getBackPath($fromDir) {
     
     return str_repeat('../', $depth);
 }
-
-define('BASE_PATH', getBackPath(__DIR__));
