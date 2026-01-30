@@ -30,13 +30,25 @@ body {
 
         .left {
             height: 100%;
-            width: 150px;
+            width: 30px;
             padding: 50px 0;
-            background-color: var(--ex-five);
-            border-radius: 0 var(--border-rad) var(--border-rad) 0;
+            background-color: var(--ex-three);
+            border-radius: 0 0 var(--border-rad) var(--border-rad);
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: var(--ex-five);
+                width: 150px;
+                border-radius: 0;
+
+                nav {
+                    display: flex;
+                }
+            }
 
             nav {
-                display: flex;
+                transition: all 0.3s ease;
+                display: none;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
