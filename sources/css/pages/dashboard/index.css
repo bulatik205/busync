@@ -29,6 +29,9 @@ body main {
 body main .left {
   height: 100%;
   width: 200px;
+  padding: 50px 0;
+  background-color: var(--ex-five);
+  border-radius: 0 var(--border-rad) var(--border-rad) 0;
 }
 body main .left nav {
   display: flex;
@@ -36,9 +39,49 @@ body main .left nav {
   align-items: center;
   flex-direction: column;
 }
+body main .left nav button {
+  width: 100%;
+  padding: 40px 0;
+  border: 0;
+  background-color: var(--ex-five);
+  color: #fff;
+  border-top: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body main .left nav button img {
+  margin-right: 20px;
+  height: 25px;
+}
+body main .left nav button:last-child {
+  border-bottom: 1px solid #fff;
+}
 body main .right {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+body main .right .right--top--panel {
+  width: 100%;
+  padding: 20px 20px 20px 20%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+body main .right .right--top--panel--search input {
+  padding: 10px;
+  border-radius: 10px;
+  font-size: var(--ts-i);
+  border: var(--border);
+}
+body main .right .right--top--panel--search button {
+  padding: 10px 30px;
+  background-color: var(--ex-three);
+  color: #fff;
+  border: var(--border);
+  border-radius: 10px;
 }/*# sourceMappingURL=index.css.map */
