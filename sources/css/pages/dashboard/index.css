@@ -28,7 +28,7 @@ body main {
 }
 body main .left {
   height: 100%;
-  width: 200px;
+  width: 150px;
   padding: 50px 0;
   background-color: var(--ex-five);
   border-radius: 0 var(--border-rad) var(--border-rad) 0;
@@ -49,10 +49,21 @@ body main .left nav button {
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  transition: all 0.3s ease;
 }
 body main .left nav button img {
   margin-right: 20px;
   height: 25px;
+}
+body main .left nav button:hover {
+  background-color: var(--ex-one);
+  cursor: pointer;
+  font-size: var(--ts-b);
+  box-shadow: 0px 0px 30px rgb(255, 255, 255);
+  z-index: 10;
 }
 body main .left nav button:last-child {
   border-bottom: 1px solid #fff;
