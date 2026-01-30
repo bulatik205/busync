@@ -18,6 +18,7 @@
     --ts-title: clamp(40px, 5vw, 52px);
     --ts-p: clamp(20px, 3vw, 32px); 
     --ts-b: clamp(12px, 3vw, 20px); 
+    --ts-i: clamp(8px, 3vw, 12px); 
 }
 
 .span-1 {
