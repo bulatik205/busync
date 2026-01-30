@@ -11,6 +11,7 @@
     --ex-five: #333; /* exclusive color: gray */
     --ex-six: #969696; /* exclusive color: gray */
     --ex-seven: #f0f0f0; /* exclusive color: text-hover */
+    --ex-eight: #ff9090; /* exclusive color: errors */
 
     --border: 1px solid var(--ex-five);
     --border-rad: clamp(20px, 5vw, 30px);
