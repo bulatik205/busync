@@ -34,7 +34,7 @@ body main .main--body--header h1 {
 body main .main--body--errors {
   padding: 10px;
   border-radius: 15px;
-  background-color: #ff9090;
+  background-color: var(--ex-eight);
   border: var(--border);
   margin-bottom: 20px;
 }
