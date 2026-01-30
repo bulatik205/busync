@@ -31,7 +31,6 @@ body main .left {
   width: 30px;
   padding: 50px 0;
   background-color: var(--ex-three);
-  border-radius: 0 0 var(--border-rad) var(--border-rad);
   transition: all 0.3s ease;
 }
 body main .left:hover {
@@ -99,7 +98,20 @@ body main .right .right--top--panel--search input {
   font-size: var(--ts-i);
   border: var(--border);
 }
+body main .right .right--top--panel--search input::-moz-placeholder {
+  font-style: italic;
+}
+body main .right .right--top--panel--search input::placeholder {
+  font-style: italic;
+}
 body main .right .right--top--panel--search button {
+  padding: 10px 30px;
+  background-color: var(--ex-three);
+  color: #fff;
+  border: var(--border);
+  border-radius: 10px;
+}
+body main .right .right--top--panel--profile button {
   padding: 10px 30px;
   background-color: var(--ex-three);
   color: #fff;

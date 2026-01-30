@@ -33,7 +33,6 @@ body {
             width: 30px;
             padding: 50px 0;
             background-color: var(--ex-three);
-            border-radius: 0 0 var(--border-rad) var(--border-rad);
             transition: all 0.3s ease;
 
             &:hover {
@@ -107,8 +106,22 @@ body {
                         border-radius: 10px;
                         font-size: var(--ts-i);
                         border: var(--border);
+
+                        &::placeholder {
+                            font-style: italic;
+                        }
                     }
 
+                    button {
+                        padding: 10px 30px;
+                        background-color: var(--ex-three);
+                        color: #fff;
+                        border: var(--border);
+                        border-radius: 10px;
+                    }
+                }
+
+                &--profile {
                     button {
                         padding: 10px 30px;
                         background-color: var(--ex-three);
