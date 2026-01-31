@@ -95,6 +95,7 @@ try {
     if (!empty($lastInsertId)) {
         $_SESSION['username'] = $_POST['username'];
         $_SESSION['session_token'] = $sessionToken;
+        $_SESSION['user_id'] = $lastInsertId;
         
         unset($_SESSION['csrf_token']);
         

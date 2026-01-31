@@ -73,6 +73,7 @@ try {
 
     $_SESSION['username'] = $stmtCheckUser['username'];
     $_SESSION['session_token'] = $sessionToken;
+    $_SESSION['user_id'] = $stmtCheckUser['id'];
 
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;
