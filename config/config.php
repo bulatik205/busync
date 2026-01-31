@@ -20,4 +20,5 @@ $pdo = new PDO(
 );
 
 require_once "verificationUser.php";
+require_once "verificationBusiness.php";
 ?>
