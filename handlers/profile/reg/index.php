@@ -83,7 +83,7 @@ if (!validateInputs($inputsRequired, $inputsOptional)) {
 }
 
 try {
-    $stmt = $pdo->prepare('INSERT INTO businesses (user_id, name, location, welcome_money, current_money) VALUES (?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO business_info (user_id, name, location, welcome_money, current_money) VALUES (?, ?, ?, ?, ?)');
     $stmt->execute([
         $_SESSION['user_id'],
         $inputsRequired['business_name'], 
