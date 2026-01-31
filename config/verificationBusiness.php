@@ -1,5 +1,5 @@
 <?php
-function vereficationBusiness($pdo, $userId) : bool {
+function verificationBusiness($pdo, $userId) : bool {
     try {
         if ($userId === null) {
             return false;
