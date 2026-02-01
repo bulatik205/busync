@@ -16,11 +16,8 @@ $errorMessages = [
     'csrf_token_invalid' => 'Сессия кончилась. Обновите страницу',
     'username_empty' => 'Введите логин',
     'password_empty' => 'Введите пароль',
-    'username_long' => 'Логин длинный (нужно до 50)',
-    'password_long' => 'Пароль длинный (нужно до 72)',
-    'user_not_found' => 'Неверный логин или пароль',
-    'wrong_password' => 'Неверный логин или пароль', 
     'server_error' => 'Попробуйте позже',
+    'incurrect_input' => 'Неверный логин или пароль',
     'session_dont_exist' => 'Вы вышли из аккаунта'
 ];
 
