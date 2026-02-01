@@ -13,67 +13,88 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-function validateInputs(): bool
-{
-    if (!isset($_POST['csrf_token'])) {
-        header('Location: ' . BASE_PATH . 'login?error=csrf_token_empty');
-        return false;
+$userInputs = [
+    'username' => [
+        'type' => 'username',
+        'value' => trim($_POST['username'] ?? ''),
+        'minLength' => 4,
+        'maxLength' => 50
+    ],
+    'password' => [
+        'type' => 'password',
+        'value' => $_POST['password'] ?? '',
+        'minLength' => 6,
+        'maxLength' => 72
+    ],
+    'csrf_token' => [
+        'type' => 'csrf_token',
+        'value' => $_POST['csrf_token'] ?? '',
+        'compare_with' => $_SESSION['csrf_token'] ?? ''
+    ]
+];
+
+function validateInputs(array $userInputs): array {
+    $errors = [];
+
+    foreach ($userInputs as $key => $input) {
+        if ($key === 'csrf_token') {
+            if (empty($input['value'])) {
+                $errors[] = 'csrf_token_empty';
+            } elseif ($input['value'] !== $input['compare_with']) {
+                $errors[] = 'csrf_token_invalid';
+            }
+            continue;
+        }
+
+        if (empty($input['value'])) {
+            $errors[] = $input['type'] . '_empty';
+            continue;
+        }
+
+        if (strlen($input['value']) > $input['maxLength']) {
+            $errors[] = $input['type'] . '_long';
+        }
+
+        if (strlen($input['value']) < $input['minLength']) {
+            $errors[] = $input['type'] . '_short';
+        }
     }
 
-    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        header('Location: ' . BASE_PATH . 'login?error=csrf_token_invalid');
-        return false;
-    }
-
-    if (!isset($_POST['password'])) {
-        header('Location: ' . BASE_PATH . 'login?error=password_empty');
-        return false;
-    }
-
-    if (!isset($_POST['username'])) {
-        header('Location: ' . BASE_PATH . 'login?error=username_empty');
-        return false;
-    }
-
-    if (strlen($_POST['password']) > 72) {
-        header('Location: ' . BASE_PATH . 'login?error=password_long');
-        return false;
-    }
-
-    if (strlen($_POST['username']) > 50) {
-        header('Location: ' . BASE_PATH . 'login?error=username_long');
-        return false;
-    }
-    
-    return true;
+    return $errors;
 }
 
-if (!validateInputs()) {
+$errors = validateInputs($userInputs);
+
+if (!empty($errors)) {
+    header('Location: ' . BASE_PATH . 'login?error=' . $errors[0]);
     exit;
 }
 
 try {
     $stmtCheckUser = $pdo->prepare("SELECT * FROM `users` WHERE `username` = ?");
-    $stmtCheckUser->execute([$_POST['username']]);
-    $stmtCheckUser = $stmtCheckUser->fetch();
+    $stmtCheckUser->execute([$userInputs['username']['value']]);
+    $user = $stmtCheckUser->fetch();
 
-    if (empty($stmtCheckUser)) {
-        header('Location: ' . BASE_PATH . 'login?error=user_not_found');
+    if (empty($user)) {
+        header('Location: ' . BASE_PATH . 'login?error=incurrect_input');
         exit;
     }
 
-    if (!password_verify($_POST['password'], $stmtCheckUser['password'])) {
-        header('Location: ' . BASE_PATH . 'login?error=wrong_password');
+    if (!password_verify($userInputs['password']['value'], $user['password_hash'])) {
+        header('Location: ' . BASE_PATH . 'login?error=incurrect_input');
         exit;
     }
 
     $sessionToken = bin2hex(random_bytes(16));
+    
     $stmtRefreshToken = $pdo->prepare("UPDATE `users` SET `session_token` = ? WHERE `id` = ?");
-    $stmtRefreshToken -> execute([$sessionToken, $stmtCheckUser['id']]);
+    $stmtRefreshToken->execute([$sessionToken, $user['id']]);
 
-    $_SESSION['username'] = $stmtCheckUser['username'];
+    $_SESSION['user_id'] = $user['id'];
     $_SESSION['session_token'] = $sessionToken;
-    $_SESSION['user_id'] = $stmtCheckUser['id'];
+    $_SESSION['username'] = $user['username'];
+
+    unset($userInputs['password']['value']);
 
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;
