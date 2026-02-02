@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once '../config/config.php';
+require_once '../modules/user/getUser.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
 if (verifyAuth($pdo) === false) {
@@ -12,6 +13,9 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
     header('Location: ' . BASE_PATH . 'profile/reg/');
     exit;
 }
+
+$getUserClass = new getUser($_SESSION['session_token'] ?? null, $pdo);
+$userInfo = $getUserClass->get();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +46,13 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
                 </form>
 
                 <div class="right--top--panel--profile">
-                    <button>Профиль</button> <!-- todo: echo user->name || профиль -->
+                    <button>
+                        <?php if (isset($userInfo['username'])): ?>
+                            <?php echo htmlspecialchars($userInfo['username']) ?>
+                        <?php else: ?>
+                            Профиль
+                        <?php endif ?>
+                    </button>
                 </div>
             </div>
 
