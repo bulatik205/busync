@@ -101,7 +101,7 @@ try {
     header('Location: ' . BASE_PATH . 'profile/reg?error=database');
     exit;
 } catch (Exception $e) {
-    error_log($e->getMessage(), __DIR__);
+    error_log(htmlspecialchars($e->getMessage()));
     header('Location: ' . BASE_PATH . 'profile/reg?error=database');
     exit;
 }
