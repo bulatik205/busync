@@ -5,8 +5,7 @@ require_once '../../config/config.php';
 
 define('BASE_PATH', getBackPath(__DIR__));
 
-require_once BASE_PATH . 'modules/user/createUser.php';
-require_once BASE_PATH . 'modules/user/validateUserExist.php';
+require_once BASE_PATH . 'modules/user/registrationService.php';
 
 if (verifyAuth($pdo) !== false) {
     header('Location: ' . BASE_PATH . 'dashboard/');
@@ -38,67 +37,34 @@ $userInputs = [
     ]
 ];
 
-function validateInputs(array $userInputs): array {
-    $errors = [];
+$registrationService = new RegistrationService($userInputs, $pdo);
 
-    foreach ($userInputs as $key => $input) {
-        if ($key === 'csrf_token') {
-            if (empty($input['value'])) {
-                $errors[] = 'csrf_token_empty';
-            } elseif ($input['value'] !== $input['compare_with']) {
-                $errors[] = 'csrf_token_invalid';
-            }
-            continue;
-        }
-
-        if (empty($input['value'])) {
-            $errors[] = $input['type'] . '_empty';
-            continue;
-        }
-
-        if (strlen($input['value']) < $input['minLength']) {
-            $errors[] = $input['type'] . '_short';
-        }
-
-        if (strlen($input['value']) > $input['maxLength']) {
-            $errors[] = $input['type'] . '_long';
-        }
-    }
-
-    if (!empty($userInputs['username']['value']) && 
-        !preg_match('/^[a-zA-Zа-яА-Я0-9_]+$/', $userInputs['username']['value'])) {
-        $errors[] = 'username_invalid';
-    }
-
-    return $errors;
-}
-
-$errors = validateInputs($userInputs);
-
+$errors = $registrationService->validateInputs();
 if (!empty($errors)) {
     unset($_SESSION['csrf_token']);
     header('Location: ' . BASE_PATH . 'reg?error=' . $errors[0]);
     exit;
 }
 
-$validateUserClass = new validateUserExist($userInputs['username']['value'], $pdo);
-$validateResult = $validateUserClass->validate();
-
-if ($validateResult) {
+$username = $userInputs['username']['value'];
+if ($registrationService->isUsernameTaken($username)) {
     header('Location: ' . BASE_PATH . 'reg?error=username_exists');
     exit;
 }
 
-$passwordHash = password_hash($userInputs['password']['value'], PASSWORD_DEFAULT);
+$result = $registrationService->registerUser();
 
-$createUserClass = new createUser($userInputs['username']['value'], $passwordHash, $pdo);
-$createResult = $createUserClass->create();
-
-if ($createResult) {
+if ($result['success']) {
+    $_SESSION['user_id'] = $result['user_id'];
+    $_SESSION['session_token'] = $result['session_token'];
+    $_SESSION['username'] = $result['username'];
+    unset($_SESSION['csrf_token']);
+    
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;
 } else {
+    unset($_SESSION['csrf_token']);
+    databaseLog($result['error'], __DIR__);
     header('Location: ' . BASE_PATH . 'reg?error=registration_failed');
     exit;
 }
-
