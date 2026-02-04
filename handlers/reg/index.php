@@ -1,7 +1,12 @@
 <?php
 session_start();
+
 require_once '../../config/config.php';
+
 define('BASE_PATH', getBackPath(__DIR__));
+
+require_once BASE_PATH . 'modules/user/createUser.php';
+require_once BASE_PATH . 'modules/user/validateUserExist.php';
 
 if (verifyAuth($pdo) !== false) {
     header('Location: ' . BASE_PATH . 'dashboard/');
@@ -76,45 +81,24 @@ if (!empty($errors)) {
     exit;
 }
 
-try {
-    $stmtCheckUsername = $pdo->prepare("SELECT id FROM `users` WHERE `username` = ?");
-    $stmtCheckUsername->execute([$userInputs['username']['value']]);
-    $existingUser = $stmtCheckUsername->fetch();
+$validateUserClass = new validateUserExist($userInputs['username']['value'], $pdo);
+$validateResult = $validateUserClass->validate();
 
-    if ($existingUser) {
-        header('Location: ' . BASE_PATH . 'reg?error=username_exists');
-        exit;
-    }
-
-    $sessionToken = bin2hex(random_bytes(16));
-    $username = $userInputs['username']['value'];
-    $passwordHash = password_hash($userInputs['password']['value'], PASSWORD_DEFAULT);
-    
-    $stmtCreateNewUser = $pdo->prepare(
-        "INSERT INTO `users` (`session_token`, `username`, `password_hash`) 
-         VALUES (?, ?, ?)"
-    );
-    
-    $stmtCreateNewUser->execute([$sessionToken, $username, $passwordHash]);
-    $lastInsertId = $pdo->lastInsertId();
-
-    if (!empty($lastInsertId)) {
-        $_SESSION['username'] = $userInputs['username']['value'];
-        $_SESSION['session_token'] = $sessionToken;
-        $_SESSION['user_id'] = $lastInsertId;
-        
-        unset($_SESSION['csrf_token']);
-        
-        header('Location: ' . BASE_PATH . 'dashboard/');
-        exit;
-    } else {
-        header('Location: ' . BASE_PATH . 'reg?error=registration_failed');
-        exit;
-    }
-    
-} catch (Exception $e) {
-    unset($_SESSION['csrf_token']);
-    databaseLog(htmlspecialchars($e->getMessage()), __DIR__);
-    header('Location: ' . BASE_PATH . 'reg?error=server_error');
+if ($validateResult) {
+    header('Location: ' . BASE_PATH . 'reg?error=username_exists');
     exit;
 }
+
+$passwordHash = password_hash($userInputs['password']['value'], PASSWORD_DEFAULT);
+
+$createUserClass = new createUser($userInputs['username']['value'], $passwordHash, $pdo);
+$createResult = $createUserClass->create();
+
+if ($createResult) {
+    header('Location: ' . BASE_PATH . 'dashboard/');
+    exit;
+} else {
+    header('Location: ' . BASE_PATH . 'reg?error=registration_failed');
+    exit;
+}
+
