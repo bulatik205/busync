@@ -29,12 +29,12 @@ class registrationService
                 continue;
             }
 
-            $lenght = strlen($input['value']);
-            if ($lenght < $input['minLenght']) {
+            $length = strlen($input['value']);
+            if ($length < $input['minLength']) {
                 $errors[] = $input['type'] . '_short';
             }
 
-            if ($lenght > $input['maxLenght']) {
+            if ($length > $input['maxLength']) {
                 $errors[] = $input['type'] . '_long';
             }
         }
@@ -84,7 +84,7 @@ class registrationService
                 $result['username'] = $username;
             }
         } catch (Exception $e) {
-            $result['error'] = htmlspecialchars($e->getMessage());
+            $result['error'] = 'server_error';
         }
 
         return $result;
