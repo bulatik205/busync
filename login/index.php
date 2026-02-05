@@ -17,6 +17,11 @@ $errorMessages = [
     'username_empty' => 'Введите логин',
     'password_empty' => 'Введите пароль',
     'server_error' => 'Попробуйте позже',
+    'username_invalid' => 'Недопустимые символы в логине',
+    'username_long' => 'Логин длинный (нужно до 50)',
+    'username_short' => 'Логин короткий (нужно от 4)',
+    'password_short' => 'Пароль короткий (нужно от 6)',
+    'password_long' => 'Пароль длинный (нужно до 72)',
     'incurrect_input' => 'Неверный логин или пароль',
     'session_dont_exist' => 'Вы вышли из аккаунта'
 ];

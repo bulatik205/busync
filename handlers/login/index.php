@@ -3,6 +3,8 @@ session_start();
 require_once '../../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
+require_once BASE_PATH . 'modules/user/loginService.php';
+
 if (verifyAuth($pdo) !== false) {
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;
@@ -33,73 +35,28 @@ $userInputs = [
     ]
 ];
 
-function validateInputs(array $userInputs): array {
-    $errors = [];
-
-    foreach ($userInputs as $key => $input) {
-        if ($key === 'csrf_token') {
-            if (empty($input['value'])) {
-                $errors[] = 'csrf_token_empty';
-            } elseif ($input['value'] !== $input['compare_with']) {
-                $errors[] = 'csrf_token_invalid';
-            }
-            continue;
-        }
-
-        if (empty($input['value'])) {
-            $errors[] = $input['type'] . '_empty';
-            continue;
-        }
-
-        if (strlen($input['value']) > $input['maxLength']) {
-            $errors[] = $input['type'] . '_long';
-        }
-
-        if (strlen($input['value']) < $input['minLength']) {
-            $errors[] = $input['type'] . '_short';
-        }
-    }
-
-    return $errors;
-}
-
-$errors = validateInputs($userInputs);
+$loginService = new loginService($userInputs, $pdo);
+$errors = $loginService->validateInputs();
 
 if (!empty($errors)) {
-    header('Location: ' . BASE_PATH . 'login?error=' . $errors[0]);
+    unset($_SESSION['csrf_token']);
+    header('Location: ' . BASE_PATH . 'login/?error=' . $errors[0]);
     exit;
 }
 
-try {
-    $stmtCheckUser = $pdo->prepare("SELECT * FROM `users` WHERE `username` = ?");
-    $stmtCheckUser->execute([$userInputs['username']['value']]);
-    $user = $stmtCheckUser->fetch();
+$result = $loginService->loginUser();
 
-    if (empty($user)) {
-        header('Location: ' . BASE_PATH . 'login?error=incurrect_input');
-        exit;
-    }
-
-    if (!password_verify($userInputs['password']['value'], $user['password_hash'])) {
-        header('Location: ' . BASE_PATH . 'login?error=incurrect_input');
-        exit;
-    }
-
-    $sessionToken = bin2hex(random_bytes(16));
-    
-    $stmtRefreshToken = $pdo->prepare("UPDATE `users` SET `session_token` = ? WHERE `id` = ?");
-    $stmtRefreshToken->execute([$sessionToken, $user['id']]);
-
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['session_token'] = $sessionToken;
-    $_SESSION['username'] = $user['username'];
-
-    unset($userInputs['password']['value']);
+if ($result['success']) {
+    $_SESSION['user_id'] = $result['user_id'];
+    $_SESSION['session_token'] = $result['session_token'];
+    $_SESSION['username'] = $result['username'];
+    unset($_SESSION['csrf_token']);
 
     header('Location: ' . BASE_PATH . 'dashboard/');
     exit;
-} catch (Exception $e) {
-    databaseLog($e->getMessage(), __DIR__);
-    header('Location: ' . BASE_PATH . 'login?error=server_error');
+} else {
+    unset($_SESSION['csrf_token']);
+    databaseLog($result['error'], __DIR__);
+    header('Location: ' . BASE_PATH . 'login/?error=login_failed');
     exit;
 }
