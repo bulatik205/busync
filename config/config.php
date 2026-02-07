@@ -6,7 +6,10 @@ require_once "pathGet.php";
 $main_host = "localhost"; 
 $main_user = "root"; 
 $main_pass = "root"; 
-$main_db = "busync"; 
+$main_db = "busync";
+
+# for local, I use all files in one folder. For production, I will make api.busync.ru (subdomain)
+define('API_PATH', 'api/');
 
 $pdo = new PDO(
     "mysql:host=$main_host;dbname=$main_db;charset=utf8mb4",
