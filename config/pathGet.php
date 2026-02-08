@@ -1,5 +1,5 @@
 <?php
-function getBackPath($fromDir) {
+function getBackPath($fromDir) : string {
     $root = realpath($_SERVER['DOCUMENT_ROOT']);
     $from = realpath($fromDir);
     
