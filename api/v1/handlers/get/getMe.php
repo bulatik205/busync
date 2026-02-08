@@ -21,7 +21,7 @@ class getMe {
         } catch (PDOException $e) {
             $data['success'] = false;
             $data['error']['message'] = 'server_error';
-            $data['erros']['code'] = '500';
+            $data['error']['code'] = '500';
             return $data;
         }
     }

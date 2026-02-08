@@ -32,7 +32,23 @@ if (!$validateSessionToken['success']) {
     ]);
 }
 
-$getMe = new getMe($validateSessionTokenResult['user_id'], $pdo);
+$userId = (int)$validateSessionTokenResult['user_id'] ?? null;
+
+if (is_null($userId) && isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+}
+
+if (is_numeric($userId)) {
+    echo json_encode([
+        'success' => false, 
+        'error' => [
+            'code' => 400, 
+            'message' => 'invalid_user_id'
+        ]
+    ]);
+}
+
+$getMe = new getMe($userId, $pdo);
 $getMeResult = $getMe->get();
 
 echo json_encode($getMeResult);
