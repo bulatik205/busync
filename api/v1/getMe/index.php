@@ -1,11 +1,13 @@
 <?php
-require_once '../../../config/config.php';
+require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
-header('Content-Type: application/json');
 
-$sessionToken = null;
+require_once BASE_PATH . 'handlers/validate/validateSessionToken.php';
+require_once BASE_PATH . 'handlers/get/getMe.php';
 
-if (!isset($_GET['session_token'])) {
+$headers = getallheaders();
+
+if (!isset($headers['API-key'])) {
     echo json_encode([
         'success' => false,
         'error' => [
@@ -13,41 +15,24 @@ if (!isset($_GET['session_token'])) {
             'message' => 'Unauthorized'
         ]
     ]);
-    exit;
 }
 
-$sessionToken = $_GET['session_token'];
+$sessionToken = $headers['API-key'];
 
-try {
-    $stmt = $pdo->prepare('SELECT * FROM `user_sessions` WHERE `session_token` = ?');
-    $stmt->execute([$sessionToken]);
-    $result = $stmt->fetch();
+$validateSessionToken = new validateSessionToken($sessionToken, $pdo);
+$validateSessionTokenResult = $validateSessionToken->validate();
 
-    if ($result) {
-        echo json_encode([
-            'success' => true,
-            'user' => [
-                'id' => $result['id'],
-                'user_id' => $result['user_id']
-            ]
-        ]);
-        exit;
-    } else {
-        echo json_encode([
-            'success' => false,
-            'error' => [
-                'code' => 401,
-                'message' => 'Unauthorized'
-            ]
-        ]);
-        exit;
-    }
-} catch (Exception $e) {
+if (!$validateSessionToken['success']) {
     echo json_encode([
         'success' => false,
         'error' => [
-            'message' => 'Server error'
+            'code' => $validateSessionTokenResult['error']['code'],
+            'message' => $validateSessionTokenResult['error']['message']
         ]
     ]);
-    exit;
 }
+
+$getMe = new getMe($validateSessionTokenResult['user_id'], $pdo);
+$getMeResult = $getMe->get();
+
+echo json_encode($getMeResult);
