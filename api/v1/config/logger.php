@@ -1,6 +1,6 @@
 <?php
 # issue: errors dont save to file. Its in local error or in production It will work? 
-function databaseLog($text, $file) : void {
+function exceptionLog($text, $file) : void {
     $logDir = __DIR__ . '/../logs/';
     
     if (!file_exists($logDir)) {
