@@ -6,7 +6,7 @@
 *  telegram (@bulatik205), 
 *  email (bulatmullagal@gmail.com)
 */
-function verifyAuth($pdo) {
+function verifyAuth($pdo) : mixed {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
