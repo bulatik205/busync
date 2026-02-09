@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
-require_once BASE_PATH . 'api/v1/handlers/validate/validateSessionToken.php';
+require_once BASE_PATH . 'api/v1/handlers/validate/validateApiKey.php';
 require_once BASE_PATH . 'api/v1/handlers/get/getMe.php';
 
 $headers = getallheaders();
@@ -29,23 +29,23 @@ if (!isset($headers['API-key'])) {
     exit;
 }
 
-$sessionToken = $headers['API-key'];
+$apiKey = $headers['API-key'];
 
-$validateSessionToken = new validateSessionToken($sessionToken, $pdo);
-$validateSessionTokenResult = $validateSessionToken->validate();
+$validateApiKey = new validateApiKey($apiKey, $pdo);
+$validateApiKeyResult = $validateApiKey->validate();
 
-if (!$validateSessionTokenResult['success']) {
+if (!$validateApiKeyResult['success']) {
     echo json_encode([
         'success' => false,
         'error' => [
-            'code' => $validateSessionTokenResult['error']['code'],
-            'message' => $validateSessionTokenResult['error']['message']
+            'code' => $validateApiKeyResult['error']['code'],
+            'message' => $validateApiKeyResult['error']['message']
         ]
     ]);
     exit;
 }
 
-$userId = (int)$validateSessionTokenResult['userId'] ?? null;
+$userId = (int)$validateApiKeyResult['userId'] ?? null;
 
 if (!is_null($userId) && isset($_SESSION['user_id'])) {
     $userId = $_SESSION['userId'];

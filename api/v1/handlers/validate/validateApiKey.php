@@ -1,10 +1,10 @@
 <?php
-class validateSessionToken {
-    private string $sessionToken;
+class validateApiKey {
+    private string $apiKey;
     private PDO $pdo;
 
-    function __construct(string $sessionToken, PDO $pdo) {
-        $this->sessionToken = $sessionToken;
+    function __construct(string $apiKey, PDO $pdo) {
+        $this->apiKey = $apiKey;
         $this->pdo = $pdo;
     }
 
@@ -12,13 +12,13 @@ class validateSessionToken {
         $data = [];
 
         try {
-            $stmt = $this->pdo->prepare("SELECT user_id FROM `users_sessions` WHERE `session_token` = ? LIMIT 1");
-            $stmt->execute([$this->sessionToken]);
+            $stmt = $this->pdo->prepare("SELECT user_id FROM `users_api` WHERE `session_token` = ? LIMIT 1");
+            $stmt->execute([$this->apiKey]);
             $SQLdata = $stmt->fetch();
 
             if (empty($SQLdata)) {
                 $data['success'] = false;
-                $data['error']['message'] = 'invalid_session_token';
+                $data['error']['message'] = 'invalid_api_key';
                 $data['error']['code'] = 401;
                 return $data;
             }
