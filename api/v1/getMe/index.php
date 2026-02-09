@@ -1,4 +1,15 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => 405,
+            'message' => 'Method Not Allowed'
+        ]
+    ]);
+    exit;
+}
+
 require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
