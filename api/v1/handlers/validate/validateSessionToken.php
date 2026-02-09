@@ -16,7 +16,7 @@ class validateSessionToken {
             $stmt->execute([$this->sessionToken]);
             $SQLdata = $stmt->fetch();
 
-            if (empty($data)) {
+            if (empty($SQLdata)) {
                 $data['success'] = false;
                 $data['error']['message'] = 'invalid_session_token';
                 $data['error']['code'] = 401;
