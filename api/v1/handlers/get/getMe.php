@@ -17,7 +17,7 @@ class getMe {
             $SQLdata = $stmt->fetch();
 
             $data['success'] = true;
-            $data['user']['user_id'] = $SQLdata['user_id'] ?? null;
+            $data['user']['id'] = $SQLdata['id'] ?? null;
             $data['user']['username'] = $SQLdata['username'] ?? null;
             $data['user']['registration_date'] = $SQLdata['data'] ?? null;
             return $data;
