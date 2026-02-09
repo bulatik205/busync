@@ -12,9 +12,9 @@ class validateSessionToken {
         $data = [];
 
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM `users_sessions` WHERE `session_token` = ? LIMIT 1");
+            $stmt = $this->pdo->prepare("SELECT user_id FROM `users_sessions` WHERE `session_token` = ? LIMIT 1");
             $stmt->execute([$this->sessionToken]);
-            $data = $stmt->fetch();
+            $SQLdata = $stmt->fetch();
 
             if (empty($data)) {
                 $data['success'] = false;
@@ -23,6 +23,8 @@ class validateSessionToken {
                 return $data;
             }
 
+            $data['success'] = true; 
+            $data['userId'] = $SQLdata['user_id'];
             return $data;
         } catch (PDOException $e) {
             exceptionLog($e->getMessage(), __DIR__);
