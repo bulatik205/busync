@@ -12,11 +12,14 @@ class getMe {
         $data = [];
 
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `id` = ? LIMIT 1");
+            $stmt = $this->pdo->prepare("SELECT id, username, data FROM `users` WHERE `id` = ? LIMIT 1");
             $stmt->execute([$this->userId]);
-            $data = $stmt->fetch();
+            $SQLdata = $stmt->fetch();
 
             $data['success'] = true;
+            $data['user']['user_id'] = $SQLdata['user_id'] ?? null;
+            $data['user']['username'] = $SQLdata['username'] ?? null;
+            $data['user']['registration_date'] = $SQLdata['data'] ?? null;
             return $data;
         } catch (PDOException $e) {
             $data['success'] = false;
