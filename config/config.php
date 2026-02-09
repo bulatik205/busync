@@ -11,9 +11,6 @@ $main_db = "busync";
 # for local, I use all files in one folder. For production, I will make api.busync.ru (subdomain)
 define('API_PATH', 'api/');
 
-# for all http://localhost form, return path to API. Use for action="php echo LOCALHOST_API_PATH ?"
-define('LOCALHOST_API_PATH', BASE_PATH . API_PATH);
-
 $pdo = new PDO(
     "mysql:host=$main_host;dbname=$main_db;charset=utf8mb4",
     $main_user,
