@@ -12,7 +12,7 @@ class validateApiKey {
         $data = [];
 
         try {
-            $stmt = $this->pdo->prepare("SELECT user_id FROM `users_api` WHERE `session_token` = ? LIMIT 1");
+            $stmt = $this->pdo->prepare("SELECT user_id, used_by FROM `users_api` WHERE `api_key` = ? LIMIT 1");
             $stmt->execute([$this->apiKey]);
             $SQLdata = $stmt->fetch();
 
@@ -32,6 +32,7 @@ class validateApiKey {
 
             $data['success'] = true; 
             $data['userId'] = $SQLdata['user_id'];
+            $data['usedBy'] = $SQLdata['used_by'];
             return $data;
         } catch (PDOException $e) {
             exceptionLog($e->getMessage(), __DIR__);
