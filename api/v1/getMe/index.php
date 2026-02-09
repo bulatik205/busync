@@ -34,10 +34,10 @@ if (!$validateSessionTokenResult['success']) {
     exit;
 }
 
-$userId = (int)$validateSessionTokenResult['user_id'] ?? null;
+$userId = (int)$validateSessionTokenResult['userId'] ?? null;
 
 if (!is_null($userId) && isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
+    $userId = $_SESSION['userId'];
 }
 
 if (is_numeric($userId)) {
