@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API TEST</title>
+</head>
+
+<body>
+    <script src="config.js"></script>
+    <script src="route.getMe.js"></script>
+    <script>
+        async function showResult() {
+            const testToken = '';
+
+            const result = await getMe(BASE_URL, testToken);
+
+            document.body.innerHTML =
+                `<h3>API Response:</h3>
+         <pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        showResult();
+    </script>
+</body>
+
+</html>
