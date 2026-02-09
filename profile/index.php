@@ -55,7 +55,7 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
 
             <div class="right--center--panel">
                 <div class="profile--header">
-                    <h1>Ваши настройки</h1>
+                    <h2>Ваши настройки</h2>
                 </div>
 
                 <div class="profile--body">
@@ -108,6 +108,43 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
                             <legend>Телефон бизнеса</legend>
                             <input type="number" name="phone" id="phone">
                         </fieldset>
+                    </div>
+
+                    <div class="api-tokens">
+                        <div class="api-tokens--header">
+                            <h2>Ваши API-key</h2>
+                        </div>
+
+                        <div class="api-tokens--body">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>API-key</td>
+                                        <td>Статус</td>
+                                        <td>Использован</td>
+                                        <td>Создан</td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>123456789</td>
+                                        <td>✅</td>
+                                        <td>Android: 123</td>
+                                        <td>09.02.2026</td>
+                                        <td>Скопировать</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>123456789</td>
+                                        <td>❌</td>
+                                        <td>browser</td>
+                                        <td>09.02.2026</td>
+                                        <td>Скопировать</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
