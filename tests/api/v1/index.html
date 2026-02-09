@@ -8,20 +8,18 @@
 </head>
 
 <body>
+    <button onclick="showValidResult('getMe')">getMe Valid</button>
+    <button onclick="showInvalidResult('getMe')">getMe</button>
+
     <script src="config.js"></script>
     <script src="route.getMe.js"></script>
+    <script src="a-index.js"></script>
+
     <script>
-        async function showResult() {
-            const testToken = '';
-
-            const result = await getMe(BASE_URL, testToken);
-
-            document.body.innerHTML =
-                `<h3>API Response:</h3>
-         <pre>${JSON.stringify(result, null, 2)}</pre>`;
+        window.onload = function() {
+            showValidResult('getMe');
+            showInvalidResult('getMe');
         }
-
-        showResult();
     </script>
 </body>
 
