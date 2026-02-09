@@ -4,6 +4,8 @@ require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 define('LOCALHOST_API_PATH', BASE_PATH . API_PATH);
 
+require_once '../modules/user/getApiTokens.php';
+
 if (verifyAuth($pdo) === false) {
     header('Location: ' . BASE_PATH . 'login/');
     exit;
@@ -13,6 +15,10 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
     header('Location: ' . BASE_PATH . 'profile/reg/');
     exit;
 }
+
+$getApiTokens = new getApiTokens($_SESSION['user_id'] ?? null, $pdo);
+$getApiTokensResult = $getApiTokens->get();
+$apiTokens = $getApiTokensResult['keys'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,6 +122,9 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
                         </div>
 
                         <div class="api-tokens--body">
+                            <?php if (!$getApiTokensResult['success']): ?>
+                                <p>Ошибка загрузки API-key</p>
+                            <?php else: ?>
                             <table>
                                 <thead>
                                     <tr>
@@ -127,23 +136,30 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>✅</td>
-                                        <td>Android: 123</td>
-                                        <td>09.02.2026</td>
-                                        <td>Скопировать</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>123456789</td>
-                                        <td>❌</td>
-                                        <td>browser</td>
-                                        <td>09.02.2026</td>
-                                        <td>Скопировать</td>
-                                    </tr>
+                                    <?php foreach ($apiTokens as $token): ?>
+                                        <tr>
+                                            <td>
+                                                <?php 
+                                            echo htmlspecialchars($token['api_key']) 
+                                            ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if (!empty($token['is_used'])) {
+                                                    echo '✅';
+                                                } else {
+                                                    echo '❌';
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($token['used_by']) ?></td>
+                                            <td><?php echo htmlspecialchars($token['data']) ?></td>
+                                            <td><button onclick="copy('<?php echo htmlspecialchars($token['api_key']) ?>')" id="<?php echo htmlspecialchars($token['api_key']) ?>">Копировать</button></td>
+                                        </tr>
+                                    <?php endforeach ?>
                                 </tbody>
                             </table>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -151,6 +167,7 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
         </div>
     </main>
 
+    <script src="../sources/js/profile/copy.js"></script>
     <script>
         const API_PATH = '<?php echo LOCALHOST_API_PATH ?>';
     </script>
