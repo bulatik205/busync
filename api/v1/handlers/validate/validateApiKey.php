@@ -18,7 +18,14 @@ class validateApiKey {
 
             if (empty($SQLdata)) {
                 $data['success'] = false;
-                $data['error']['message'] = 'invalid_api_key';
+                $data['error']['message'] = 'Invalid API-key';
+                $data['error']['code'] = 401;
+                return $data;
+            }
+
+            if (empty($SQLdata['used_by'])) {
+                $data['success'] = false;
+                $data['error']['message'] = 'Unauthorized session';
                 $data['error']['code'] = 401;
                 return $data;
             }
@@ -29,7 +36,7 @@ class validateApiKey {
         } catch (PDOException $e) {
             exceptionLog($e->getMessage(), __DIR__);
             $data['success'] = false;
-            $data['error']['message'] = 'server_error';
+            $data['error']['message'] = 'Server error';
             $data['error']['code'] = 500;
             return $data;
         }
