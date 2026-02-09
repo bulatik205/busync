@@ -1,10 +1,10 @@
 <?php
 class getMe {
-    private string $user_id;
+    private int $userId;
     private PDO $pdo;
 
-    function __construct(string $user_id, PDO $pdo) {
-        $this->user_id = $user_id;
+    function __construct(int $userId, PDO $pdo) {
+        $this->userId = $userId;
         $this->pdo = $pdo;
     }
 
@@ -13,7 +13,7 @@ class getMe {
 
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `id` = ? LIMIT 1");
-            $stmt->execute([$this->user_id]);
+            $stmt->execute([$this->userId]);
             $data = $stmt->fetch();
 
             $data['success'] = true;

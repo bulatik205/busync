@@ -1,10 +1,10 @@
 <?php
 class validateSessionToken {
-    private string $session_token;
+    private string $sessionToken;
     private PDO $pdo;
 
-    function __construct(string $session_token, PDO $pdo) {
-        $this->session_token = $session_token;
+    function __construct(string $sessionToken, PDO $pdo) {
+        $this->sessionToken = $sessionToken;
         $this->pdo = $pdo;
     }
 
@@ -13,7 +13,7 @@ class validateSessionToken {
 
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM `users_sessions` WHERE `session_token` = ? LIMIT 1");
-            $stmt->execute([$this->session_token]);
+            $stmt->execute([$this->sessionToken]);
             $data = $stmt->fetch();
 
             if (empty($data)) {
