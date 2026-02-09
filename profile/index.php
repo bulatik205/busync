@@ -129,8 +129,8 @@ $apiTokens = $getApiTokensResult['keys'];
                                 <thead>
                                     <tr>
                                         <td>API-key</td>
-                                        <td>Статус</td>
                                         <td>Использован</td>
+                                        <td>Где используется</td>
                                         <td>Создан</td>
                                         <td></td>
                                     </tr>
@@ -146,9 +146,9 @@ $apiTokens = $getApiTokensResult['keys'];
                                             <td>
                                                 <?php
                                                 if (!empty($token['is_used'])) {
-                                                    echo '✅';
-                                                } else {
                                                     echo '❌';
+                                                } else {
+                                                    echo '✅';
                                                 }
                                                 ?>
                                             </td>
@@ -157,6 +157,14 @@ $apiTokens = $getApiTokensResult['keys'];
                                             <td><button onclick="copy('<?php echo htmlspecialchars($token['api_key']) ?>')" id="<?php echo htmlspecialchars($token['api_key']) ?>">Копировать</button></td>
                                         </tr>
                                     <?php endforeach ?>
+
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><button>Создать новый</button></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <?php endif ?>
