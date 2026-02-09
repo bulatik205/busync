@@ -1,3 +1,5 @@
+const results = document.getElementById('results');
+
 async function showValidResult(type) {
     let result;
 
@@ -5,11 +7,12 @@ async function showValidResult(type) {
         result = await getMe(BASE_URL, VALID_TOKEN);
     }
 
-    document.body.innerHTML +=
+    results.innerHTML +=
         `
             <div class="result">
             <h3>${type} - API valid Response:</h3>
             <pre>${JSON.stringify(result, null, 2)}</pre>
+            <p>Used token: "<span class='token'>${VALID_TOKEN}</span>"</p>
             </div>
         `;
 }
@@ -21,11 +24,12 @@ async function showInvalidResult(type) {
         result = await getMe(BASE_URL, INVALID_TOKEN);
     }
 
-    document.body.innerHTML +=
+    results.innerHTML +=
         `
             <div class="result">
             <h3>${type} - API invalid Response:</h3>
             <pre>${JSON.stringify(result, null, 2)}</pre>
+            <p>Used token: "<span class='token'>${INVALID_TOKEN}</span>"</p>
             </div>
         `;
 }
@@ -37,11 +41,12 @@ async function showEmptyResult(type) {
         result = await getMe(BASE_URL, EMPTY_TOKEN);
     }
 
-    document.body.innerHTML +=
+    results.innerHTML +=
         `
             <div class="result">
             <h3>${type} - API empty Response:</h3>
             <pre>${JSON.stringify(result, null, 2)}</pre>
+            <p>Used token: "<span class='token'>${EMPTY_TOKEN}</span>"</p>
             </div>
         `;
 }
