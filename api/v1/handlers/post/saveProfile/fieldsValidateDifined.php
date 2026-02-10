@@ -1,5 +1,5 @@
 <?php
-class fieldsValidate
+class fieldsValidateDifined
 {
     public array $fields;
     public array $update;
