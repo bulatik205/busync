@@ -19,6 +19,14 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
 $getApiTokens = new getApiTokens($_SESSION['user_id'] ?? null, $pdo);
 $getApiTokensResult = $getApiTokens->get();
 $apiTokens = $getApiTokensResult['keys'];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getMe/");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "API-key: " . $apiTokens[0]['api_key']
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$getMeResult = json_decode(curl_exec($ch), true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,54 +84,54 @@ $apiTokens = $getApiTokensResult['keys'];
                     <div class="custom-fields">
                         <fieldset class="profile--body--content">
                             <legend>Имя</legend>
-                            <input type="text" name="first_name" id="first_name">
+                            <input type="text" name="first_name" id="first_name" value="<?php echo htmlspecialchars($getMeResult['user']['first_name'] ?? "") ?>">
                         </fieldset>
 
                         <fieldset class="profile--body--content">
                             <legend>Фамилия</legend>
-                            <input type="text" name="last_name" id="last_name">
+                            <input type="text" name="last_name" id="last_name" value="<?php echo htmlspecialchars($getMeResult['user']['last_name'] ?? "") ?>">
                         </fieldset>
 
                         <fieldset class="profile--body--content">
                             <legend>Отчество</legend>
-                            <input type="text" name="father_name" id="father_name">
+                            <input type="text" name="father_name" id="father_name" value="<?php echo htmlspecialchars($getMeResult['user']['father_name'] ?? "") ?>">
                         </fieldset>
 
                         <fieldset class="profile--body--content">
                             <legend>Тип бизнеса</legend>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_ip" value="ip">
+                                <input type="radio" name="business_type" id="business_type_ip" value="ip" <?php echo ($getMeResult['user']['business_type'] ?? '') == "ip" ? 'checked' : 'checked' ?>>
                                 <label for="business_type_ip">ИП</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_ooo" value="ooo">
+                                <input type="radio" name="business_type" id="business_type_ooo" value="ooo" <?php echo ($getMeResult['user']['business_type'] ?? '') == "ooo" ? 'checked' : '' ?>>
                                 <label for="business_type_ooo">ООО</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_sz" value="sz">
+                                <input type="radio" name="business_type" id="business_type_sz" value="sz" <?php echo ($getMeResult['user']['business_type'] ?? '') == "sz" ? 'checked' : '' ?>>
                                 <label for="business_type_sz">Самозанятый</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_other" value="other">
+                                <input type="radio" name="business_type" id="business_type_other" value="other" <?php echo ($getMeResult['user']['business_type'] ?? '') == "other" ? 'checked' : '' ?>>
                                 <label for="business_type_other">Другой</label>
                             </div>
                         </fieldset>
 
                         <fieldset class="profile--body--content">
                             <legend>Сайт бизнеса</legend>
-                            <input type="url" name="business_site" id="business_site">
+                            <input type="url" name="business_site" id="business_site" value="<?php echo htmlspecialchars($getMeResult['user']['business_site'] ?? "") ?>">
                         </fieldset>
 
                         <fieldset class="profile--body--content">
                             <legend>Телефон бизнеса</legend>
-                            <input type="number" name="phone" id="phone">
+                            <input type="number" name="phone" id="phone" value="<?php echo htmlspecialchars($getMeResult['user']['phone'] ?? "") ?>">
                         </fieldset>
 
-                        <button onclick="saveProfile(API_KEY)">Сохранить</button>
+                        <button onclick=" saveProfile(API_KEY)">Сохранить</button>
                     </div>
 
                     <div class="api-tokens">
