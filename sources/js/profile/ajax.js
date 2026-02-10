@@ -19,17 +19,17 @@ async function saveProfile(API_KEY) {
             },
             body: JSON.stringify({
                 "fields": {
-                    "first_name": firstName, 
-                    "last_name": lastName, 
-                    "father_name": fatherName, 
-                    "business_type": businessType, 
-                    "business_site": businessSite, 
+                    "first_name": firstName,
+                    "last_name": lastName,
+                    "father_name": fatherName,
+                    "business_type": businessType,
+                    "business_site": businessSite,
                     "phone": phone
                 }
             })
         });
 
-        const result = await response.json(); 
+        const result = await response.json();
 
         if (result.success) {
             successProfieBlock.style.display = "block";
@@ -46,6 +46,11 @@ async function saveProfile(API_KEY) {
             console.log(result.error.message)
         }
     } catch (error) {
-        console.log(error);
+        errorProfieBlock.style.display = "block";
+
+        setTimeout(() => {
+            errorProfieBlock.style.display = "none";
+        }, 2000);
+        console.log(result.error.message)
     }
 }
