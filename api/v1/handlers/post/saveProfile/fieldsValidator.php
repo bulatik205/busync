@@ -12,7 +12,11 @@ class fieldsValidator
         $isValid = true;
 
         foreach ($this->update as $key => $value) {
-            if (!isset($value) || strlen($value) > 100 || strlen($value) < 2) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+            
+            if (strlen($value) > 100 || strlen($value) < 2) {
                 $isValid = false;
                 break;
             }
