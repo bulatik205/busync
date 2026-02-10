@@ -60,6 +60,14 @@ $apiTokens = $getApiTokensResult['keys'];
             </div>
 
             <div class="right--center--panel">
+                <fieldset class="profile--body--content success" id="profile-success">
+                    <p>Успешно сохранено</p>
+                </fieldset>
+
+                <fieldset class="profile--body--content error" id="profile-error">
+                    <p>Неуспешно, попробуйте позже</p>
+                </fieldset>
+
                 <div class="profile--header">
                     <h2>Ваши настройки</h2>
                 </div>
@@ -85,22 +93,22 @@ $apiTokens = $getApiTokensResult['keys'];
                             <legend>Тип бизнеса</legend>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_ip">
+                                <input type="radio" name="business_type" id="business_type_ip" value="ip">
                                 <label for="business_type_ip">ИП</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_ooo">
+                                <input type="radio" name="business_type" id="business_type_ooo" value="ooo">
                                 <label for="business_type_ooo">ООО</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_sz">
+                                <input type="radio" name="business_type" id="business_type_sz" value="sz">
                                 <label for="business_type_sz">Самозанятый</label>
                             </div>
 
                             <div class="profile--body--content--radio">
-                                <input type="radio" name="business_type" id="business_type_other">
+                                <input type="radio" name="business_type" id="business_type_other" value="other">
                                 <label for="business_type_other">Другой</label>
                             </div>
                         </fieldset>
@@ -114,6 +122,8 @@ $apiTokens = $getApiTokensResult['keys'];
                             <legend>Телефон бизнеса</legend>
                             <input type="number" name="phone" id="phone">
                         </fieldset>
+
+                        <button onclick="saveProfile(API_KEY)">Сохранить</button>
                     </div>
 
                     <div class="api-tokens">
@@ -125,48 +135,48 @@ $apiTokens = $getApiTokensResult['keys'];
                             <?php if (!$getApiTokensResult['success']): ?>
                                 <p>Ошибка загрузки API-key</p>
                             <?php else: ?>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>API-key</td>
-                                        <td>Использован</td>
-                                        <td>Где используется</td>
-                                        <td>Создан</td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($apiTokens as $token): ?>
+                                <table>
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <?php 
-                                            echo htmlspecialchars($token['api_key']) 
-                                            ?>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                if (!empty($token['is_used'])) {
-                                                    echo '❌';
-                                                } else {
-                                                    echo '✅';
-                                                }
-                                                ?>
-                                            </td>
-                                            <td><?php echo htmlspecialchars($token['used_by']) ?></td>
-                                            <td><?php echo htmlspecialchars($token['data']) ?></td>
-                                            <td><button onclick="copy('<?php echo htmlspecialchars($token['api_key']) ?>')" id="<?php echo htmlspecialchars($token['api_key']) ?>">Копировать</button></td>
+                                            <td>API-key</td>
+                                            <td>Использован</td>
+                                            <td>Где используется</td>
+                                            <td>Создан</td>
+                                            <td></td>
                                         </tr>
-                                    <?php endforeach ?>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($apiTokens as $token): ?>
+                                            <tr>
+                                                <td>
+                                                    <?php
+                                                    echo htmlspecialchars($token['api_key'])
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    if (!empty($token['is_used'])) {
+                                                        echo '❌';
+                                                    } else {
+                                                        echo '✅';
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td><?php echo htmlspecialchars($token['used_by']) ?></td>
+                                                <td><?php echo htmlspecialchars($token['data']) ?></td>
+                                                <td><button onclick="copy('<?php echo htmlspecialchars($token['api_key']) ?>')" id="<?php echo htmlspecialchars($token['api_key']) ?>">Копировать</button></td>
+                                            </tr>
+                                        <?php endforeach ?>
 
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td><button>Создать новый</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td><button>Создать новый</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             <?php endif ?>
                         </div>
                     </div>
@@ -176,8 +186,9 @@ $apiTokens = $getApiTokensResult['keys'];
     </main>
 
     <script src="../sources/js/profile/copy.js"></script>
+    <script src="../sources/js/profile/ajax.js"></script>
     <script>
-        const API_PATH = '<?php echo LOCALHOST_API_PATH ?>';
+        const API_KEY = '<?php echo htmlspecialchars($apiTokens[0]['api_key']) ?>';
     </script>
 </body>
 
