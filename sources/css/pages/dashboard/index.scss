@@ -3,6 +3,12 @@
 * {
     font-family: var(--sans-code);
     box-sizing: border-box;
+
+    // Костыль (crutch - a temporary but working solution that requires refactoring of the page logic)
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
     //border: var(--border); // for debug
 }
 

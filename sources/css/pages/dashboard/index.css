@@ -3,6 +3,9 @@
   font-family: var(--sans-code);
   box-sizing: border-box;
 }
+* ::-webkit-scrollbar {
+  display: none;
+}
 
 html {
   height: 100vh;
