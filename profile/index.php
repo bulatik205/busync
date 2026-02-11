@@ -69,7 +69,7 @@ $getMeResult = json_decode(curl_exec($ch), true);
 
             <div class="right--center--panel">
                 <fieldset class="profile--body--content success" id="profile-success">
-                    <p>Успешно сохранено</p>
+                    <p>Успешно!</p>
                 </fieldset>
 
                 <fieldset class="profile--body--content error" id="profile-error">
@@ -149,41 +149,42 @@ $getMeResult = json_decode(curl_exec($ch), true);
                                     <thead>
                                         <tr>
                                             <td>API-key</td>
-                                            <td>Использован</td>
+                                            <td>Можно использовать</td>
                                             <td>Где используется</td>
                                             <td>Создан</td>
                                             <td></td>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="api-keys">
                                         <?php foreach ($apiTokens as $token): ?>
-                                            <tr>
+                                            <?php
+                                                $tokenUsed = !empty($token['used_by']);
+                                            ?>
+                                            <tr style="background-color: <?php echo $tokenUsed ? '#c577473f' : '#5dce8c4e'; ?>">
                                                 <td>
-                                                    <?php
-                                                    echo htmlspecialchars(substr($token['api_key'], 0, 16) . "...");
-                                                    ?>
+                                                    <?php echo htmlspecialchars(substr($token['api_key'], 0, 16) . "..."); ?>
                                                 </td>
-                                                <td>
-                                                    <?php
-                                                    if (!empty($token['is_used'])) {
-                                                        echo '❌';
-                                                    } else {
-                                                        echo '✅';
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><?php echo htmlspecialchars($token['used_by']) ?></td>
-                                                <td><?php echo htmlspecialchars($token['data']) ?></td>
-                                                <td><button onclick="copy('<?php echo htmlspecialchars($token['api_key']) ?>')" id="<?php echo htmlspecialchars($token['api_key']) ?>">Копировать</button></td>
-                                            </tr>
-                                        <?php endforeach ?>
 
-                                        <tr>
+                                                <td>
+                                                    <?php echo $tokenUsed ? "❌" : "✅"; ?>
+                                                </td>
+
+                                                <td><?php echo htmlspecialchars($token['used_by'] ?? 'Нигде'); ?></td>
+                                                <td><?php echo htmlspecialchars($token['data'] ?? ''); ?></td>
+                                                <td>
+                                                    <button onclick="copy('<?php echo htmlspecialchars($token['api_key']); ?>')">
+                                                        Копировать
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+
+                                        <tr id="create-api-block" style="background-color: #5d88ce47;">
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
-                                            <td><button>Создать новый</button></td>
+                                            <td><button onclick="createApi(API_KEY)">Создать новый</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
