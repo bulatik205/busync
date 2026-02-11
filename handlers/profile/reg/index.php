@@ -83,6 +83,15 @@ if (!validateInputs($inputsRequired, $inputsOptional)) {
 }
 
 try {
+    $apiKey = bin2hex(random_bytes(128));
+
+    $stmt = $pdo->prepare("INSERT INTO users_api(user_id, api_key, used_by, is_system) VALUES(?, ?, ?, ?)");
+    $stmt->execute([
+        $_SESSION['user_id'],
+        $apiKey,
+        "Этот ключ используется для внутренний запросов. Вы не можете его использовать для API, но и показывать этот ключ никому не надо.",
+        "true"
+    ]);
     $stmt = $pdo->prepare('INSERT INTO business_info (user_id, name, location, welcome_money, current_money) VALUES (?, ?, ?, ?, ?)');
     $stmt->execute([
         $_SESSION['user_id'],
