@@ -46,7 +46,7 @@ $userInfo = $getUserClass->get();
                 </form>
 
                 <div class="right--top--panel--profile">
-                    <button>
+                    <button onclick="window.location = '../profile/'">
                         <?php if (isset($userInfo['username'])): ?>
                             <?php echo htmlspecialchars($userInfo['username']) ?>
                         <?php else: ?>

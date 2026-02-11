@@ -57,7 +57,7 @@ $getMeResult = json_decode(curl_exec($ch), true);
                 </form>
 
                 <div class="right--top--panel--profile">
-                    <button>
+                    <button onclick="window.location = '../profile/'">
                         <?php if (isset($userInfo['username'])): ?>
                             <?php echo htmlspecialchars($userInfo['username']) ?>
                         <?php else: ?>
