@@ -24,12 +24,14 @@ body {
         height: 100%;
         width: 100%;
         display: flex;
+        align-items: stretch;
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
 
         .left {
-            height: 100%;
+            height: auto;
+            align-self: stretch;
             width: 30px;
             padding: 50px 0;
             background-color: var(--ex-three);
@@ -86,6 +88,8 @@ body {
         }
 
         .right {
+            flex: 1;
+            overflow-y: auto;
             height: 100%;
             width: 100%;
             display: flex;
