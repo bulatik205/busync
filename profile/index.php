@@ -131,7 +131,9 @@ $getMeResult = json_decode(curl_exec($ch), true);
                             <input type="number" name="phone" id="phone" value="<?php echo htmlspecialchars($getMeResult['user']['phone'] ?? "") ?>">
                         </fieldset>
 
-                        <button onclick=" saveProfile(API_KEY)">Сохранить</button>
+                        <div class="profile--body--content">
+                            <button onclick=" saveProfile(API_KEY)">Сохранить</button>
+                        </div>
                     </div>
 
                     <div class="api-tokens">
@@ -158,7 +160,7 @@ $getMeResult = json_decode(curl_exec($ch), true);
                                             <tr>
                                                 <td>
                                                     <?php
-                                                    echo htmlspecialchars($token['api_key'])
+                                                    echo htmlspecialchars(substr($token['api_key'], 0, 16) . "...");
                                                     ?>
                                                 </td>
                                                 <td>
