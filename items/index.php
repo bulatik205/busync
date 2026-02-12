@@ -100,17 +100,17 @@ $userInfo = $getUserClass->get();
 
                         <fieldset>
                             <legend>Остаток</legend>
-                            <input type="number" id="item_name" minlength="4" maxlength="255" placeholder="Остаток, число">
+                            <input type="number" id="item_remain" minlength="4" maxlength="255" placeholder="Остаток, число">
                         </fieldset>
 
                         <fieldset>
                             <legend>Единица измерения</legend>
-                            <input type="text" id="item_name" minlength="4" maxlength="255" placeholder="Единица измерения (л., кв. м., куб. см. или др.)">
+                            <input type="text" id="item_unit" minlength="4" maxlength="255" placeholder="Единица измерения (л., кв. м., куб. см. или др.)">
                         </fieldset>
 
                         <fieldset>
                             <legend>Статус</legend>
-                            <input type="text" id="item_name" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ'">
+                            <input type="text" id="item_status" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ'">
                         </fieldset>
                     </div>
                 </div>
