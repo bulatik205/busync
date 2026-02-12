@@ -100,3 +100,9 @@ if (!$getItemsResult['success']) {
     ]);
     exit;
 }
+
+echo json_encode([
+    'success' => true,
+    'fields' => $getItemsResult['fields']
+]);
+exit;
