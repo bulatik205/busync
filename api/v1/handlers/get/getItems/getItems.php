@@ -17,11 +17,12 @@ class getItems {
 
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM `items` WHERE user_id = ? ORDER BY id LIMIT ? OFFSET ?");
-            /* I read that MYSQL
+            /* 
+            * I read that MYSQL
             * converts types to string,
             * so I protected myself
             * from unwanted problems
-            *  by explicitly specifying INT
+            * by explicitly specifying INT
             */
             $stmt->bindValue(1, $this->userId, PDO::PARAM_INT);
             $stmt->bindValue(2, $this->limit, PDO::PARAM_INT);

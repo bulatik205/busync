@@ -87,3 +87,16 @@ if (!$validateLimitsResult['success']) {
     exit;
 }
 
+$getItems = new getItems($userId, $pdo, $update['fields']['offset'], $update['fields']['limit']);
+$getItemsResult = $getItems->get();
+
+if (!$getItemsResult['success']) {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => $getItemsResult['error']['code'],
+            'message' => $getItemsResult['error']['message']        
+        ]
+    ]);
+    exit;
+}
