@@ -73,3 +73,17 @@ if (!is_numeric($userId)) {
     exit;
 }
 
+$validateLimits = new validateLimits($update['fields']['limit'], $update['fields']['offset']);
+$validateLimitsResult = $validateLimits->validate();
+
+if (!$validateLimitsResult['success']) {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => 400,
+            'message' => $validateLimitsResult['error']['message']
+        ]
+    ]);
+    exit;
+}
+
