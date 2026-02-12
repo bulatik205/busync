@@ -47,10 +47,6 @@ if (!$validateApiKeyResult['success']) {
 
 $userId = (int)$validateApiKeyResult['userId'] ?? null;
 
-if (!is_null($userId) && isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['userId'];
-}
-
 if (!is_numeric($userId)) {
     echo json_encode([
         'success' => false, 
