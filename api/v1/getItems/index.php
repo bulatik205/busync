@@ -46,21 +46,7 @@ if (!$validateApiKeyResult['success']) {
     exit;
 }
 
-$update = json_decode(file_get_contents('php://input'), true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode([
-        'success' => false,
-        'error' => [
-            'code' => 400,
-            'message' => 'Invalid JSON format',
-            'details' => json_last_error_msg()
-        ]
-    ]);
-    exit;
-}
-
-$userId = (int)$validateApiKeyResult['userId'] ?? null;
+$userId = (int)$validateApiKeyResult['userId'];
 
 if (!is_numeric($userId)) {
     echo json_encode([
@@ -73,7 +59,10 @@ if (!is_numeric($userId)) {
     exit;
 }
 
-$validateLimits = new validateLimits($update['fields']['limit'], $update['fields']['offset']);
+$limitInGet = isset($_GET['limit']) ? trim($_GET['limit']) : null;
+$offsetInGet = isset($_GET['offset']) ? trim($_GET['offset']) : null;
+
+$validateLimits = new validateLimits($limitInGet, $offsetInGet);
 $validateLimitsResult = $validateLimits->validate();
 
 if (!$validateLimitsResult['success']) {
@@ -87,7 +76,7 @@ if (!$validateLimitsResult['success']) {
     exit;
 }
 
-$getItems = new getItems($userId, $pdo, $update['fields']['offset'], $update['fields']['limit']);
+$getItems = new getItems($userId, $pdo, $offsetInGet, $limitInGet);
 $getItemsResult = $getItems->get();
 
 if (!$getItemsResult['success']) {
