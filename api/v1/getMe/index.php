@@ -14,7 +14,7 @@ require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
 require_once BASE_PATH . 'api/v1/handlers/validate/validateApiKey.php';
-require_once BASE_PATH . 'api/v1/handlers/get/getMe.php';
+require_once BASE_PATH . 'api/v1/handlers/get/getMe/getMe.php';
 
 $headers = getallheaders();
 
