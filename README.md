@@ -16,3 +16,10 @@
 - _User-session_ **=> [♻️]**
 - _API_ **=> [♻️]**
 - _Расширения_ **=> [❌]**
+
+**Готовые API точки**
+- `/API/v1/getMe/`
+- `/API/v1/saveProfile/`
+- `/API/v1/getItems/`
+- `/API/v1/createItem/` **=> [♻️]**
+- `/API/v1/createApi/` **=> [♻️]**
