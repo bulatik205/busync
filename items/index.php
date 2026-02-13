@@ -24,7 +24,7 @@ $getApiTokensResult = $getApiTokens->get();
 $apiTokens = $getApiTokensResult['keys'];
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getItems/");
+curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getItems/?limit=50");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "API-key: " . $apiTokens[0]['api_key']
 ]);
@@ -133,9 +133,12 @@ $itemsFields = $getItemsResult['fields'];
 
                 <div class="items">
                     <div class="items--body">
+                        <h2>Все товары</h2>
+
                         <table>
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Название</th>
                                     <th>Артикул</th>
                                     <th>Категория</th>
@@ -154,6 +157,7 @@ $itemsFields = $getItemsResult['fields'];
                                 <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
                                     <?php foreach ($itemsFields as $item): ?>
                                         <tr>
+                                            <td><?php echo htmlspecialchars($item['id'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_name'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_art'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_category'] ?? '—') ?></td>
