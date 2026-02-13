@@ -9,12 +9,15 @@
     justify-content: start;
     align-items: start;
     flex-direction: column;
+    gap: 20px;
     padding: 0 40px;
 
     .form-add {
         &--body {
             fieldset {
-                input, textarea {
+
+                input,
+                textarea {
                     padding: 5px;
                     border-radius: 5px;
                     border: 1px solid #333;
@@ -26,6 +29,62 @@
                     resize: vertical;
                     min-height: 100px;
                 }
+            }
+        }
+    }
+
+    .items {
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: sans-serif;
+            font-size: 14px;
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px 12px;
+                text-align: left;
+                min-width: 200px;
+                max-width: 300px;
+                word-wrap: break-word;
+
+                button {
+                    background-color: var(--ex-five);
+                    border: 1px solid #333;
+                    color: #fff;
+                    border-radius: 5px;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: var(--ex-three);
+                    }
+                }
+            }
+
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        @media (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
             }
         }
     }
