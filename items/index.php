@@ -156,7 +156,7 @@ $itemsFields = $getItemsResult['fields'];
                             <tbody>
                                 <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
                                     <?php foreach ($itemsFields as $item): ?>
-                                        <tr>
+                                        <tr onclick="this.classList.toggle('highlight')" style="cursor: pointer;">
                                             <td><?php echo htmlspecialchars($item['id'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_name'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_art'] ?? '—') ?></td>
