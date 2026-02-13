@@ -1,8 +1,10 @@
-<?php 
+<?php
 session_start();
 require_once '../config/config.php';
 require_once '../modules/user/getUser.php';
 define('BASE_PATH', getBackPath(__DIR__));
+
+require_once '../modules/user/getApiTokens.php';
 
 if (verifyAuth($pdo) === false) {
     header('Location: ' . BASE_PATH . 'login/');
@@ -16,6 +18,20 @@ if (verificationBusiness($pdo, $_SESSION['user_id']) === false) {
 
 $getUserClass = new getUser($_SESSION['session_token'] ?? null, $pdo);
 $userInfo = $getUserClass->get();
+
+$getApiTokens = new getApiTokens($_SESSION['user_id'] ?? null, $pdo);
+$getApiTokensResult = $getApiTokens->get();
+$apiTokens = $getApiTokensResult['keys'];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getItems/");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "API-key: " . $apiTokens[0]['api_key']
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$getItemsResult = json_decode(curl_exec($ch), true);
+
+$itemsFields = $getItemsResult['fields'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +58,7 @@ $userInfo = $getUserClass->get();
             <div class="right--top--panel">
                 <form class="right--top--panel--search">
                     <input type="text" required placeholder="Поиск по аккаунту">
-                    <button>Поиск</button> 
+                    <button>Поиск</button>
                 </form>
 
                 <div class="right--top--panel--profile">
@@ -112,6 +128,52 @@ $userInfo = $getUserClass->get();
                             <legend>Статус</legend>
                             <input type="text" id="item_status" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ'">
                         </fieldset>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="items--body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Артикул</th>
+                                    <th>Категория</th>
+                                    <th>Остаток</th>
+                                    <th>Розница</th>
+                                    <th>Себестоимость</th>
+                                    <th>Производитель</th>
+                                    <th>Единица измерения</th>
+                                    <th>Статус</th>
+                                    <th>Описание</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            <tbody>
+                                <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
+                                    <?php foreach ($itemsFields as $item): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($item['item_name'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_art'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_category'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_remain'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_retail'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_cost'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_manufacturer'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_unit'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_status'] ?? '—') ?></td>
+                                            <td><?php echo htmlspecialchars($item['item_description'] ?? '—') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" style="text-align: center; padding: 40px;">Товаров пока нет</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
