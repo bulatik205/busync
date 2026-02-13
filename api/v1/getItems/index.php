@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     echo json_encode([
         'success' => false,
@@ -59,8 +62,8 @@ if (!is_numeric($userId)) {
     exit;
 }
 
-$limitInGet = isset($_GET['limit']) ? trim($_GET['limit']) : null;
-$offsetInGet = isset($_GET['offset']) ? trim($_GET['offset']) : null;
+$limitInGet = $_GET['limit'] ?? null;
+$offsetInGet = $_GET['offset'] ?? null;
 
 $validateLimits = new validateLimits($limitInGet, $offsetInGet);
 $validateLimitsResult = $validateLimits->validate();
@@ -76,7 +79,10 @@ if (!$validateLimitsResult['success']) {
     exit;
 }
 
-$getItems = new getItems($userId, $pdo, $offsetInGet, $limitInGet);
+$limit = $limitInGet !== null ? (int)$limitInGet : 10;
+$offset = $offsetInGet !== null ? (int)$offsetInGet : 0;
+
+$getItems = new getItems($userId, $pdo, $offset, $limit);
 $getItemsResult = $getItems->get();
 
 if (!$getItemsResult['success']) {

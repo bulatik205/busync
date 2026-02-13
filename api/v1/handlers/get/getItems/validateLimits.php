@@ -4,7 +4,7 @@ class validateLimits
     public $limit;
     public $offset;
 
-    public function __construct(?int $limit, ?int $offset)
+    public function __construct($limit, $offset)
     {
         $this->limit = $limit;
         $this->offset = $offset;
