@@ -11,6 +11,29 @@
   gap: 20px;
   padding: 0 40px;
 }
+.right--center--panel .success {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  width: 300px;
+  background-color: var(--ex-one);
+  color: #fff;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+.right--center--panel .error {
+  position: absolute;
+  background-color: var(--ex-eight);
+  display: none;
+  top: 0px;
+  left: 20px;
+  min-width: 300px;
+  max-width: 600px;
+  color: #fff;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
 .right--center--panel .form-add {
   padding: 20px;
 }
@@ -26,12 +49,26 @@
   resize: vertical;
   min-height: 100px;
 }
+.right--center--panel .form-add--body button {
+  background-color: var(--ex-five);
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  margin: 20px 0;
+  font-size: var(--ts-b);
+}
+.right--center--panel .form-add--body button:hover {
+  cursor: pointer;
+  background-color: var(--ex-three);
+}
 .right--center--panel .items {
   padding: 20px;
 }
 .right--center--panel .items table {
   border-collapse: collapse;
-  width: 100%;
+  width: 1400px;
+  overflow-x: scroll;
   font-family: sans-serif;
   font-size: 14px;
 }
@@ -40,15 +77,14 @@
   color: #fff;
 }
 .right--center--panel .items table tr {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .right--center--panel .items table th,
 .right--center--panel .items table td {
   border: 1px solid #ddd;
   padding: 8px 12px;
   text-align: left;
-  min-width: 200px;
-  max-width: 300px;
+  max-width: 250px;
   word-wrap: break-word;
 }
 .right--center--panel .items table th button,
