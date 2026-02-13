@@ -15,7 +15,7 @@ class validateLimits
         $data = [];
 
         if (isset($this->limit)) {
-            if (!is_int($this->limit)) {
+            if (!is_numeric($this->limit)) {
                 $data['success'] = false;
                 $data['error']['message'] = "Invalid type";
                 return $data;
@@ -29,7 +29,7 @@ class validateLimits
         }
 
         if (isset($this->offset)) {
-            if (!is_int($this->offset)) {
+            if (!is_numeric($this->offset)) {
                 $data['success'] = false;
                 $data['error']['message'] = "Invalid type";
                 return $data;
