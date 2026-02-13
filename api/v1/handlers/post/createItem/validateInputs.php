@@ -55,7 +55,7 @@ class validateInputs
             'regex' => '#^[а-яА-Яa-zA-Z0-9\s.,\-()&*/]+$#u'
         ],
         'item_remain' => [
-            'required' => false,
+            'required' => true,
             'type' => 'integer',
             'min' => 0,
             'max' => 9999999
