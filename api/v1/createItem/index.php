@@ -71,7 +71,19 @@ if (!isset($update['fields'])) {
     exit;
 }
 
-// todo: validate inputs
+$validateInputs = new validateInputs($update['fields']);
+$validateInputsResult = $validateInputs->validate();
+
+if (!$validateInputsResult['success']) {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => 400,
+            'message' => $validateInputsResult['error']['message']
+        ]
+    ]);
+    exit;
+}
 
 $userId = (int)$validateApiKeyResult['userId'] ?? null;
 

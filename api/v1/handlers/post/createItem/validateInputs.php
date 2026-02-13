@@ -1,6 +1,6 @@
 <?php
 
-class ValidateInputs
+class validateInputs
 {
     /**
      * Input data to validate
