@@ -73,6 +73,10 @@ $itemsFields = $getItemsResult['fields'];
             </div>
 
             <div class="right--center--panel">
+                <fieldset class="item--body--content success" id="items-success"></fieldset>
+
+                <fieldset class="item--body--content error" id="items-error"></fieldset>
+
                 <div class="form-add">
                     <div class="form-add--header">
                         <h2>Добавить товар</h2>
@@ -128,6 +132,8 @@ $itemsFields = $getItemsResult['fields'];
                             <legend>Статус</legend>
                             <input type="text" id="item_status" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ'">
                         </fieldset>
+
+                        <button onclick="createItem()">Создать</button>
                     </div>
                 </div>
 
@@ -153,10 +159,9 @@ $itemsFields = $getItemsResult['fields'];
                             </thead>
 
                             <tbody>
-                            <tbody>
                                 <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
                                     <?php foreach ($itemsFields as $item): ?>
-                                        <tr onclick="this.classList.toggle('highlight')" style="cursor: pointer;">
+                                        <tr ondblclick="this.classList.toggle('highlight')" style="cursor: pointer;">
                                             <td><?php echo htmlspecialchars($item['id'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_name'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_art'] ?? '—') ?></td>
@@ -176,13 +181,16 @@ $itemsFields = $getItemsResult['fields'];
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-</body>
 
+    <script src="../sources/js/items/ajax.js"></script>
+    <script>
+        const API_KEY = '<?php echo htmlspecialchars($apiTokens[0]['api_key']) ?>';
+    </script>
+</body>
 </html>
