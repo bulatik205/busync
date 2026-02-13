@@ -46,6 +46,19 @@ if (!$validateApiKeyResult['success']) {
     exit;
 }
 
+$userId = (int)$validateApiKeyResult['userId'] ?? null;
+
+if (!is_numeric($userId)) {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => 400,
+            'message' => 'invalid_user_id'
+        ]
+    ]);
+    exit;
+}
+
 $update = json_decode(file_get_contents('php://input'), true);
 
 if (json_last_error() !== JSON_ERROR_NONE) {
@@ -85,15 +98,22 @@ if (!$validateInputsResult['success']) {
     exit;
 }
 
-$userId = (int)$validateApiKeyResult['userId'] ?? null;
+$createItem = new createItem($userId, $update['fields'], $pdo);
+$createItemResult = $createItem->create();
 
-if (!is_numeric($userId)) {
+if (!$createItemResult['success']) {
     echo json_encode([
         'success' => false,
         'error' => [
-            'code' => 400,
-            'message' => 'invalid_user_id'
+            'code' => 500,
+            'message' => $createItemResult['error']['message']
         ]
     ]);
     exit;
 }
+
+echo json_encode([
+    'success' => true,
+    'fields' => $createItemResult['fields']
+]);
+exit;
