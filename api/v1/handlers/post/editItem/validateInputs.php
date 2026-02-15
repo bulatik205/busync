@@ -1,5 +1,4 @@
 <?php
-
 class validateInputs
 {
     /**
@@ -140,7 +139,7 @@ class validateInputs
         /*
         * ID - required field. And n >= 1 (ignore ID) fields must be have, otherwise: error   
         */
-        if ($this->validInputFields <= 1) {
+        if ($this->validInputFields <= 2) {
             $success = false;
         }
 
@@ -151,9 +150,6 @@ class validateInputs
                 'message' => 'Invalid inputs'
             ]
         ];
-        if ($success) {
-            $result['fields'] = $cleanData;
-        }
 
         return $result;
     }
