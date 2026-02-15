@@ -242,4 +242,103 @@ async function createItem() {
     }
 }
 
+function createItem() {
+    const itemData = {
+        item_name: document.getElementById('item_name').value,
+        item_description: document.getElementById('item_description').value,
+        item_art: document.getElementById('item_art').value,
+        item_category: document.getElementById('item_category').value,
+        item_cost: document.getElementById('item_cost').value,
+        item_retail: document.getElementById('item_retail').value,
+        item_manufacturer: document.getElementById('item_manufacturer').value,
+        item_remain: document.getElementById('item_remain').value,
+        item_unit: document.getElementById('item_unit').value,
+        item_status: document.getElementById('item_status').value
+    };
+
+    fetch('http://localhost/busync/api/v1/createItem/', {
+        method: 'POST',
+        headers: {
+            'API-key': API_KEY,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ fields: itemData })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Товар успешно создан!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showNotification('Ошибка: ' + (data.error?.message || 'Неизвестная ошибка'), 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Ошибка соединения с сервером', 'error');
+        console.error('Error:', error);
+    });
+}
+
+function updateItem() {
+    const itemId = document.getElementById('edit_item_id').value;
+    const itemData = {
+        id: itemId,
+        item_name: document.getElementById('edit_item_name').value,
+        item_description: document.getElementById('edit_item_description').value,
+        item_art: document.getElementById('edit_item_art').value,
+        item_category: document.getElementById('edit_item_category').value,
+        item_cost: document.getElementById('edit_item_cost').value,
+        item_retail: document.getElementById('edit_item_retail').value,
+        item_manufacturer: document.getElementById('edit_item_manufacturer').value,
+        item_remain: document.getElementById('edit_item_remain').value,
+        item_unit: document.getElementById('edit_item_unit').value,
+        item_status: document.getElementById('edit_item_status').value
+    };
+
+    fetch('http://localhost/busync/api/v1/editItem/', {
+        method: 'POST',
+        headers: {
+            'API-key': API_KEY,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ fields: itemData })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Товар успешно обновлен!', 'success');
+            closeEditModal();
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showNotification('Ошибка: ' + (data.error?.message || 'Неизвестная ошибка'), 'error');
+            
+            if (data.error?.code === 404) {
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        }
+    })
+    .catch(error => {
+        showNotification('Ошибка соединения с сервером', 'error');
+        console.error('Error:', error);
+    });
+}
+
+function showNotification(message, type) {
+    const notification = document.getElementById('items-' + type);
+    if (notification) {
+        notification.textContent = message;
+        notification.style.display = 'block';
+        
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', addValidationListeners);
