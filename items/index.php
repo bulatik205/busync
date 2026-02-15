@@ -41,6 +41,7 @@ $itemsFields = $getItemsResult['fields'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BuSync | Товары</title>
     <link rel="stylesheet" href="../sources/css/pages/items/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -74,8 +75,76 @@ $itemsFields = $getItemsResult['fields'];
 
             <div class="right--center--panel">
                 <fieldset class="item--body--content success" id="items-success"></fieldset>
-
                 <fieldset class="item--body--content error" id="items-error"></fieldset>
+
+                <div class="modal-overlay" id="editModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Редактировать товар</h2>
+                            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm" onsubmit="event.preventDefault(); updateItem();">
+                                <input type="hidden" id="edit_item_id">
+                                
+                                <fieldset>
+                                    <legend>Название товара</legend>
+                                    <input type="text" id="edit_item_name" minlength="4" maxlength="255" placeholder="Название" required>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Описание товара</legend>
+                                    <textarea id="edit_item_description" minlength="4" maxlength="10000" placeholder="Описание"></textarea>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Артикул</legend>
+                                    <input type="text" id="edit_item_art" minlength="4" maxlength="255" placeholder="Артикул">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Категория</legend>
+                                    <input type="text" id="edit_item_category" minlength="4" maxlength="100" placeholder="Категория">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Себестоимость</legend>
+                                    <input type="number" step="0.01" id="edit_item_cost" placeholder="Себестоимость" required>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Розничная цена</legend>
+                                    <input type="number" step="0.01" id="edit_item_retail" placeholder="Розничная цена" required>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Производитель</legend>
+                                    <input type="text" id="edit_item_manufacturer" minlength="4" maxlength="255" placeholder="Производитель">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Остаток</legend>
+                                    <input type="number" id="edit_item_remain" placeholder="Остаток">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Единица измерения</legend>
+                                    <input type="text" id="edit_item_unit" minlength="4" maxlength="255" placeholder="Единица измерения">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Статус</legend>
+                                    <input type="text" id="edit_item_status" minlength="4" maxlength="255" placeholder="Статус">
+                                </fieldset>
+
+                                <div class="modal-buttons">
+                                    <button type="button" onclick="closeEditModal()">Отмена</button>
+                                    <button type="submit">Сохранить изменения</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-add">
                     <div class="form-add--header">
@@ -85,52 +154,52 @@ $itemsFields = $getItemsResult['fields'];
                     <div class="form-add--body">
                         <fieldset>
                             <legend>Название товара</legend>
-                            <input type="text" id="item_name" minlength="4" maxlength="255" placeholder="Название">
+                            <input type="text" id="item_name" minlength="4" maxlength="255" placeholder="Название: не меньше 4 и не больше 255 символов">
                         </fieldset>
 
                         <fieldset>
                             <legend>Описание товара</legend>
-                            <textarea type="text" id="item_description" minlength="4" maxlength="10000" placeholder="Описание"></textarea>
+                            <textarea type="text" id="item_description" minlength="4" maxlength="10000" placeholder="Описание: не меньше 4 и не больше 10.000 символов"></textarea>
                         </fieldset>
 
                         <fieldset>
                             <legend>Артикул</legend>
-                            <input type="text" id="item_art" minlength="4" maxlength="255" placeholder="Артикул">
+                            <input type="text" id="item_art" minlength="4" maxlength="255" placeholder="Артикул: не меньше 4 и не больше 255 символов">
                         </fieldset>
 
                         <fieldset>
                             <legend>Категория</legend>
-                            <input type="text" id="item_category" minlength="4" maxlength="100" placeholder="Категория">
+                            <input type="text" id="item_category" minlength="4" maxlength="100" placeholder="Категория: не меньше 4 и не больше 100 символов">
                         </fieldset>
 
                         <fieldset>
                             <legend>Себестоимость</legend>
-                            <input type="number" id="item_cost" minlength="2" maxlength="20" placeholder="Себестоимость, число (до 2 знаков после запятой)">
+                            <input type="number" step="0.01" id="item_cost" placeholder="Себестоимость, число (до 2 знаков после запятой)">
                         </fieldset>
 
                         <fieldset>
                             <legend>Розничная цена</legend>
-                            <input type="number" id="item_retail" minlength="2" maxlength="20" placeholder="Розничная цена, число (до 2 знаков после запятой)">
+                            <input type="number" step="0.01" id="item_retail" placeholder="Розничная цена, число (до 2 знаков после запятой)">
                         </fieldset>
 
                         <fieldset>
                             <legend>Производитель</legend>
-                            <input type="text" id="item_manufacturer" minlength="4" maxlength="255" placeholder="Производитель">
+                            <input type="text" id="item_manufacturer" minlength="4" maxlength="255" placeholder="Производитель: не меньше 4 и не больше 255 символов">
                         </fieldset>
 
                         <fieldset>
                             <legend>Остаток</legend>
-                            <input type="number" id="item_remain" minlength="4" maxlength="255" placeholder="Остаток, число">
+                            <input type="number" id="item_remain" placeholder="Остаток, число">
                         </fieldset>
 
                         <fieldset>
                             <legend>Единица измерения</legend>
-                            <input type="text" id="item_unit" minlength="4" maxlength="255" placeholder="Единица измерения (л., кв. м., куб. см. или др.)">
+                            <input type="text" id="item_unit" minlength="4" maxlength="255" placeholder="Единица измерения: не меньше 4 и не больше 255 символов">
                         </fieldset>
 
                         <fieldset>
                             <legend>Статус</legend>
-                            <input type="text" id="item_status" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ'">
+                            <input type="text" id="item_status" minlength="4" maxlength="255" placeholder="Статус, например, 'под заказ': не меньше 4 и не больше 255 символов">
                         </fieldset>
 
                         <button onclick="createItem()">Создать</button>
@@ -144,6 +213,7 @@ $itemsFields = $getItemsResult['fields'];
                         <table>
                             <thead>
                                 <tr>
+                                    <th style="width: 50px;"></th>
                                     <th>ID</th>
                                     <th>Название</th>
                                     <th>Артикул</th>
@@ -162,6 +232,11 @@ $itemsFields = $getItemsResult['fields'];
                                 <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
                                     <?php foreach ($itemsFields as $item): ?>
                                         <tr ondblclick="this.classList.toggle('highlight')" style="cursor: pointer;">
+                                            <td style="text-align: center;">
+                                                <button class="edit-btn" onclick="openEditModal(<?php echo htmlspecialchars(json_encode($item)) ?>)" title="Редактировать товар">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
+                                            </td>
                                             <td><?php echo htmlspecialchars($item['id'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_name'] ?? '—') ?></td>
                                             <td><?php echo htmlspecialchars($item['item_art'] ?? '—') ?></td>
@@ -177,7 +252,7 @@ $itemsFields = $getItemsResult['fields'];
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="10" style="text-align: center; padding: 40px;">Товаров пока нет</td>
+                                        <td colspan="12" style="text-align: center; padding: 40px;">Товаров пока нет</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -189,6 +264,7 @@ $itemsFields = $getItemsResult['fields'];
     </main>
 
     <script src="../sources/js/items/ajax.js"></script>
+    <script src="../sources/js/items/openMenu.js"></script>
     <script>
         const API_KEY = '<?php echo htmlspecialchars($apiTokens[0]['api_key']) ?>';
     </script>
