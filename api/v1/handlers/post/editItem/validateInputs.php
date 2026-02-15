@@ -7,12 +7,18 @@ class validateInputs
      */
     public array $inputs;
 
-    public int $fieldsAll = 0;
+    public int $validInputFields = 0;
 
     /**
      * Validation rules for each field
      */
     private array $rules = [
+        'id' => [
+            'required' => true,
+            'type' => 'integer',
+            'min' => 1,
+            'max' => 100000
+        ],
         'item_name' => [
             'required' => false,
             'minLength' => 4,
@@ -76,9 +82,6 @@ class validateInputs
         ]
     ];
 
-    /**
-     * Constructor
-     */
     public function __construct(array $inputs)
     {
         $this->inputs = $inputs;
@@ -98,7 +101,7 @@ class validateInputs
             $value = $this->inputs[$field] ?? null;
 
             // Check required fields
-            if ($this->isEmpty($value)) {
+            if ($this->isEmptyAndCount($value)) {
                 if (!empty($rule['required'])) {
                     $errors[$field][] = 'Field require';
                 } else {
@@ -134,7 +137,10 @@ class validateInputs
 
         $success = empty($errors);
 
-        if ($this->fieldsAll == 0) {
+        /*
+        * ID - required field. And n >= 1 (ignore ID) fields must be have, otherwise: error   
+        */
+        if ($this->validInputFields <= 1) {
             $success = false;
         }
 
@@ -158,15 +164,15 @@ class validateInputs
     private function validateString($value, array $rule, string $field): array
     {
         if (isset($rule['minLength']) && mb_strlen($value, 'UTF-8') < $rule['minLength']) {
-            return ['error' => "Min {$rule['minLength']} simbols", 'value' => null];
+            return ['error' => "Min {$rule['minLength']} symbols", 'value' => null];
         }
 
         if (isset($rule['maxLength']) && mb_strlen($value, 'UTF-8') > $rule['maxLength']) {
-            return ['error' => "Max {$rule['maxLength']} simbols", 'value' => null];
+            return ['error' => "Max {$rule['maxLength']} symbols", 'value' => null];
         }
 
         if (isset($rule['regex']) && !preg_match($rule['regex'], $value)) {
-            return ['error' => 'Field have invalid simbols', 'value' => null];
+            return ['error' => 'Field have invalid symbols', 'value' => null];
         }
 
         $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
@@ -215,17 +221,20 @@ class validateInputs
         return ['error' => null, 'value' => (string)$num];
     }
 
+    private function counter() : void {
+        $this->validInputFields++;
+    }
+
     /**
-     * Check if value is empty
+     * Check if value is empty and add count with counter
      */
-    private function isEmpty($value): bool
-    {
+    private function isEmptyAndCount($value) : bool {
         if ($value === null) return true;
         if ($value === '') return true;
         if (is_array($value) && empty($value)) return true;
         if (is_string($value) && trim($value) === '') return true;
 
-        $this->fieldsAll++;
+        $this->counter();
 
         return false;
     }
