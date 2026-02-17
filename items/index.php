@@ -86,7 +86,7 @@ $itemsFields = $getItemsResult['fields'];
                         <div class="modal-body">
                             <form id="editForm" onsubmit="event.preventDefault(); updateItem();">
                                 <input type="hidden" id="edit_item_id">
-                                
+
                                 <fieldset>
                                     <legend>Название товара</legend>
                                     <input type="text" id="edit_item_name" minlength="4" maxlength="255" placeholder="Название" required>
@@ -214,6 +214,7 @@ $itemsFields = $getItemsResult['fields'];
                             <thead>
                                 <tr>
                                     <th style="width: 50px;"></th>
+                                    <th style="width: 50px;"></th>
                                     <th>ID</th>
                                     <th>Название</th>
                                     <th>Артикул</th>
@@ -233,8 +234,14 @@ $itemsFields = $getItemsResult['fields'];
                                     <?php foreach ($itemsFields as $item): ?>
                                         <tr ondblclick="this.classList.toggle('highlight')" style="cursor: pointer;">
                                             <td style="text-align: center;">
-                                                <button class="edit-btn" onclick="openEditModal(<?php echo htmlspecialchars(json_encode($item)) ?>)" title="Редактировать товар">
+                                                <button class="edit-btn btn" onclick="openEditModal(<?php echo htmlspecialchars(json_encode($item)) ?>)" title="Редактировать товар">
                                                     <i class="fas fa-pencil-alt"></i>
+                                                </button>
+                                            </td>
+
+                                            <td style="text-align: center">
+                                                <button class="delete-btn btn" onclick="openDeleteModal(<?php echo htmlspecialchars(json_encode($item)) ?>)" title="Удалить товар">
+                                                    <i class="fas fa-trash-can"></i>
                                                 </button>
                                             </td>
                                             <td><?php echo htmlspecialchars($item['id'] ?? '—') ?></td>
@@ -269,4 +276,5 @@ $itemsFields = $getItemsResult['fields'];
         const API_KEY = '<?php echo htmlspecialchars($apiTokens[0]['api_key']) ?>';
     </script>
 </body>
+
 </html>
