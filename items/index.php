@@ -146,6 +146,32 @@ $itemsFields = $getItemsResult['fields'];
                     </div>
                 </div>
 
+                <div class="modal-overlay" id="deleteModal">
+                    <div class="modal-content delete-modal">
+                        <div class="modal-header delete-header">
+                            <h2><i class="fas fa-exclamation-triangle"></i> Подтверждение удаления</h2>
+                            <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+                        </div>
+                        <div class="modal-body delete-body">
+                            <div class="delete-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <p class="delete-question">Действительно хотите удалить товар?</p>
+                            <div class="delete-item-info" id="deleteItemInfo">
+                                
+                            </div>
+                            <div class="delete-buttons">
+                                <button class="delete-cancel-btn" onclick="closeDeleteModal()">
+                                    <i class="fas fa-times"></i> Отмена
+                                </button>
+                                <button class="delete-confirm-btn" onclick="confirmDelete()">
+                                    <i class="fas fa-check"></i> Да, удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-add">
                     <div class="form-add--header">
                         <h2>Добавить товар</h2>
