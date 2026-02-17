@@ -1,3 +1,5 @@
+// POWERED BY AI
+
 const itemsSuccess = document.getElementById("items-success");
 const itemsError = document.getElementById("items-error");
 const tableBody = document.querySelector("tbody");
@@ -342,3 +344,79 @@ function showNotification(message, type) {
 }
 
 document.addEventListener('DOMContentLoaded', addValidationListeners);
+
+function deleteItem(itemId) {
+    showMessage('Удаление товара...', 'info');
+    
+    const requestBody = {
+        fields: {
+            id: itemId
+        }
+    };
+    
+    fetch('http://localhost/busync/api/v1/deleteItem/', {
+        method: 'POST',
+        headers: {
+            'API-key': API_KEY,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success === true) {
+            showMessage('Товар успешно удален!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            const errorMessage = data.error?.message || 'Неизвестная ошибка';
+            const errorCode = data.error?.code || '';
+            showMessage(`Ошибка удаления`, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage('Ошибка соединения. Попробуйте позже');
+    });
+}
+
+function showMessage(text, type) {
+    const successBlock = document.getElementById('items-success');
+    const errorBlock = document.getElementById('items-error');
+    
+    successBlock.style.display = 'none';
+    errorBlock.style.display = 'none';
+    
+    if (type === 'success') {
+        successBlock.style.display = 'block';
+        successBlock.innerHTML = `<p>✅ ${text}</p>`;
+        
+        setTimeout(() => {
+            successBlock.style.display = 'none';
+        }, 3000);
+    } else if (type === 'error') {
+        errorBlock.style.display = 'block';
+        errorBlock.innerHTML = `<p>❌ ${text}</p>`;
+        
+        setTimeout(() => {
+            errorBlock.style.display = 'none';
+        }, 5000);
+    } else if (type === 'info') {
+        errorBlock.style.display = 'block';
+        errorBlock.style.backgroundColor = '#3498db'; 
+        errorBlock.innerHTML = `<p>ℹ️ ${text}</p>`;
+        
+        setTimeout(() => {
+            errorBlock.style.display = 'none';
+            errorBlock.style.backgroundColor = ''; 
+        }, 2000);
+    }
+}
