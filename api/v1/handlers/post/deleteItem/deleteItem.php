@@ -6,6 +6,7 @@ class deleteItem {
 
     public function __construct(int $itemId, int $userId, PDO $pdo) {
         $this->itemId = $itemId;
+        $this->userId = $userId;
         $this->pdo = $pdo;
     }
 
