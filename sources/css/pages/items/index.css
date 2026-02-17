@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @import url("../../base.css");
 @import url("../dashboard/index.css");
 .right--center--panel {
@@ -142,7 +141,6 @@
   }
 }
 
-/* Стили для модального окна */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -271,4 +269,148 @@
 }
 .modal-buttons button:last-child:hover {
   background-color: var(--ex-three);
+}
+
+.delete-modal {
+  max-width: 450px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.delete-header {
+  background-color: var(--ex-three) !important;
+  padding: 15px 20px;
+}
+
+.delete-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+}
+
+.delete-header h2 i {
+  font-size: 1.2rem;
+}
+
+.delete-body {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.delete-icon {
+  margin-bottom: 20px;
+}
+
+.delete-icon i {
+  font-size: 60px;
+  color: var(--ex-three);
+  opacity: 0.8;
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.delete-question {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.delete-item-info {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: left;
+  border-left: 4px solid var(--ex-three);
+}
+
+.delete-item-info p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.delete-item-info .item-name {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.delete-item-info .item-id {
+  color: #777;
+  font-size: 0.85rem;
+  font-family: monospace;
+}
+
+.delete-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.delete-cancel-btn,
+.delete-confirm-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.delete-cancel-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+.delete-cancel-btn:hover {
+  background-color: #e4e4e4;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delete-confirm-btn {
+  background-color: var(--ex-three);
+  color: white;
+  border: 1px solid var(--ex-three);
+}
+
+.delete-confirm-btn:hover {
+  background-color: var(--ex-three);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+.delete-modal.active {
+  animation: shake 0.5s ease;
 }/*# sourceMappingURL=index.css.map */
