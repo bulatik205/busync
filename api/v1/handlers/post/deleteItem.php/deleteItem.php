@@ -1,17 +1,18 @@
 <?php
 class deleteItem {
     public int $itemId;
+    public int $userId;
     private PDO $pdo;
 
-    public function __construct(int $itemId, PDO $pdo) {
+    public function __construct(int $itemId, int $userId, PDO $pdo) {
         $this->itemId = $itemId;
         $this->pdo = $pdo;
     }
 
     public function delete(): array {
         try {
-            $stmt = $this->pdo->prepare("DELETE FROM items WHERE id = ?");
-            $stmt->execute([$this->itemId]);
+            $stmt = $this->pdo->prepare("DELETE FROM items WHERE id = ? AND user_id = ?");
+            $stmt->execute([$this->itemId, $this->userId]);
             
             $rowCount = $stmt->rowCount();
 
