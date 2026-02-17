@@ -6,7 +6,7 @@ class validateInputs {
         $this->itemId = $itemId;
     }
 
-    public function validate() {
+    public function validate() : bool {
         $maxLength = 1000000;
         $minLength = 1;
         $error = false;

@@ -100,3 +100,21 @@ if ($validateInputsResult) {
     exit;
 }
 
+$deleteItem = new deleteItem($update['fields']['id'], $userId, $pdo);
+$deleteItemResult = $deleteItem->delete();
+
+if (!$deleteItemResult['success']) {
+    echo json_encode([
+        'success' => false,
+        'error' => [
+            'code' => $deleteItemResult['error']['code'],
+            'message' => $deleteItemResult['error']['message']
+        ]
+    ]);
+    exit;
+}
+
+echo json_encode([
+    'success' => true
+]);
+exit;
