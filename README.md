@@ -1,9 +1,9 @@
 # <div style="display: flex; justify-content: center; align-items: center;"><img src="sources/images/system/logo-only.png" style="height: 200px"></div><div style="display: flex; justify-content: center; align-items: center; gap: 20px">**BuSync - управляйте вашим бизнесом**</div><div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 20px">_⚙️ In dev: wait_</div>
 ## Roadmap:
-**MVP**
+**MVP ❤️** - ГОТОВО
 - _Регистрация_ **=> [✅]**
 - _Вход_ **=> [✅]**
-- _Управление товарами_ **=> [♻️]**
+- _Управление товарами_ **=> [✅]**
 - _БД и таблицы_ **=> [✅]**
 
 **После MVP:**
