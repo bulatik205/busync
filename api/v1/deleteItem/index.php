@@ -14,7 +14,7 @@ require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
 require_once BASE_PATH . 'api/v1/handlers/validate/validateApiKey.php';
-require_once BASE_PATH . 'api/v1/handlers/post/deleteItem/validateInputs.php';
+require_once BASE_PATH . 'api/v1/handlers/post/deleteItem/validateInput.php';
 require_once BASE_PATH . 'api/v1/handlers/post/deleteItem/deleteItem.php';
 
 $headers = getallheaders();
@@ -86,10 +86,10 @@ if (!isset($update['fields']['id'])) {
 
 $update['fields']['user_id'] = $userId;
 
-$validateInputs = new validateInputs($update['fields']['id']);
-$validateInputsResult = $validateInputs->validate();
+$validateInput = new validateInput($update['fields']['id']);
+$validateInputResult = $validateInput->validate();
 
-if ($validateInputsResult) {
+if ($validateInputResult) {
     echo json_encode([
         'success' => false,
         'error' => [

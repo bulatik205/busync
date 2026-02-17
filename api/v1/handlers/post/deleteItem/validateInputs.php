@@ -1,5 +1,5 @@
 <?php
-class validateInputs {
+class validateInput {
     public $itemId;
 
     public function __construct($itemId) {
