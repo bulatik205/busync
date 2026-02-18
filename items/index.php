@@ -23,8 +23,10 @@ $getApiTokens = new getApiTokens($_SESSION['user_id'] ?? null, $pdo);
 $getApiTokensResult = $getApiTokens->get();
 $apiTokens = $getApiTokensResult['keys'];
 
+$limit = 50;
+
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getItems/?limit=50");
+curl_setopt($ch, CURLOPT_URL, "http://localhost/busync/api/v1/getItems/?limit=" . $limit);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "API-key: " . $apiTokens[0]['api_key']
 ]);
@@ -32,6 +34,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $getItemsResult = json_decode(curl_exec($ch), true);
 
 $itemsFields = $getItemsResult['fields'];
+$totalItems = $getItemsResult['total'] ?? count($itemsFields);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,7 +161,7 @@ $itemsFields = $getItemsResult['fields'];
                             </div>
                             <p class="delete-question">Действительно хотите удалить товар?</p>
                             <div class="delete-item-info" id="deleteItemInfo">
-                                
+
                             </div>
                             <div class="delete-buttons">
                                 <button class="delete-cancel-btn" onclick="closeDeleteModal()">
@@ -255,7 +258,7 @@ $itemsFields = $getItemsResult['fields'];
                                 </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody id="items-table-body">
                                 <?php if (!empty($itemsFields) && is_array($itemsFields)): ?>
                                     <?php foreach ($itemsFields as $item): ?>
                                         <tr ondblclick="this.classList.toggle('highlight')" style="cursor: pointer;">
@@ -285,22 +288,39 @@ $itemsFields = $getItemsResult['fields'];
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="12" style="text-align: center; padding: 40px;">Товаров пока нет</td>
+                                        <td colspan="13" style="text-align: center; padding: 40px;">Товаров пока нет</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
+
+                        <div class="load-more-container" id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: <?php echo (count($itemsFields) >= $limit) ? 'block' : 'none'; ?>;">
+                            <button id="loadMoreBtn" class="load-more-btn" onclick="loadMoreItems()">
+                                <i class="fas fa-spinner"></i> Показать еще
+                            </button>
+                            <div id="loadingSpinner" style="display: none;">
+                                <i class="fas fa-circle-notch fa-spin"></i> Загрузка...
+                            </div>
+                        </div>
+
+                        <div id="noMoreItems" style="text-align: center; margin-top: 20px; color: #888; display: none;">
+                            Больше товаров нет
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="../sources/js/items/ajax.js"></script>
-    <script src="../sources/js/items/openMenu.js"></script>
     <script>
         const API_KEY = '<?php echo htmlspecialchars($apiTokens[0]['api_key']) ?>';
+        const ITEMS_LIMIT = <?php echo $limit; ?>;
+        let currentOffset = <?php echo count($itemsFields); ?>;
+        let isLoading = false;
+        let hasMoreItems = <?php echo (count($itemsFields) >= $limit) ? 'true' : 'false'; ?>;
     </script>
+    <script src="../sources/js/items/ajax.js"></script>
+    <script src="../sources/js/items/openMenu.js"></script>
 </body>
 
 </html>
