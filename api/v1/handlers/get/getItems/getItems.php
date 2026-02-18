@@ -31,6 +31,15 @@ class getItems {
 
             $data['success'] = true;
             $data['fields'] = $stmt->fetchAll();
+
+            /*
+            * Two fetch... Todo: think about how to make one request or how to save COUNT in the cache
+            */
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) as total FROM items WHERE user_id = ?");
+            $stmt->execute([$this->userId]);
+            $result = $stmt->fetch();
+
+            $data['total'] = $result['total'];
             return $data;
         } catch (Exception $e) {
             $data = [];
