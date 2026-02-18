@@ -348,19 +348,11 @@ document.addEventListener('DOMContentLoaded', addValidationListeners);
 function deleteItem(itemId) {
     showMessage('Удаление товара...', 'info');
     
-    const requestBody = {
-        fields: {
-            id: itemId
-        }
-    };
-    
-    fetch('http://localhost/busync/api/v1/deleteItem/', {
-        method: 'POST',
+    fetch('http://localhost/busync/api/v1/deleteItem/?id=' + itemId, {
+        method: 'DELETE',
         headers: {
-            'API-key': API_KEY,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
+            'API-key': API_KEY
+        }
     })
     .then(response => {
         if (!response.ok) {

@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
     echo json_encode([
         'success' => false,
         'error' => [
@@ -14,8 +14,8 @@ require_once '../config/config.php';
 define('BASE_PATH', getBackPath(__DIR__));
 
 require_once BASE_PATH . 'api/v1/handlers/validate/validateApiKey.php';
-require_once BASE_PATH . 'api/v1/handlers/post/deleteItem/validateInput.php';
-require_once BASE_PATH . 'api/v1/handlers/post/deleteItem/deleteItem.php';
+require_once BASE_PATH . 'api/v1/handlers/delete/deleteItem/validateInput.php';
+require_once BASE_PATH . 'api/v1/handlers/delete/deleteItem/deleteItem.php';
 
 $headers = getallheaders();
 
@@ -59,21 +59,9 @@ if (!is_numeric($userId)) {
     exit;
 }
 
-$update = json_decode(file_get_contents('php://input'), true);
+$itemId = trim($_GET['id']) ?? null;
 
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode([
-        'success' => false,
-        'error' => [
-            'code' => 400,
-            'message' => 'Invalid JSON format',
-            'details' => json_last_error_msg()
-        ]
-    ]);
-    exit;
-}
-
-if (!isset($update['fields']['id'])) {
+if ($itemId == null) {
     echo json_encode([
         'success' => false,
         'error' => [
@@ -84,9 +72,7 @@ if (!isset($update['fields']['id'])) {
     exit;
 }
 
-$update['fields']['user_id'] = $userId;
-
-$validateInput = new validateInput($update['fields']['id']);
+$validateInput = new validateInput($itemId);
 $validateInputResult = $validateInput->validate();
 
 if ($validateInputResult) {
@@ -100,7 +86,7 @@ if ($validateInputResult) {
     exit;
 }
 
-$deleteItem = new deleteItem($update['fields']['id'], $userId, $pdo);
+$deleteItem = new deleteItem($itemId, $userId, $pdo);
 $deleteItemResult = $deleteItem->delete();
 
 if (!$deleteItemResult['success']) {
