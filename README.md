@@ -1,6 +1,6 @@
 # <div style="display: flex; justify-content: center; align-items: center;"><img src="sources/images/system/logo-only.png" style="height: 200px"></div><div style="display: flex; justify-content: center; align-items: center; gap: 20px">**BuSync - управляйте вашим бизнесом**</div><div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 20px">_⚙️ In dev: wait_</div>
 ## Roadmap:
-**MVP ❤️** - ГОТОВО
+**MVP** - ГОТОВО
 - _Регистрация_ **=> [✅]**
 - _Вход_ **=> [✅]**
 - _Управление товарами_ **=> [✅]**
@@ -23,3 +23,5 @@
 - `/API/v1/getItems/`
 - `/API/v1/createItem/` **=> [♻️]**
 - `/API/v1/createApi/` **=> [♻️]**
+
+## MVP звершен. Проект заморожен 
