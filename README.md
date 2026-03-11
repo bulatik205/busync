@@ -21,7 +21,7 @@
 - `/API/v1/getMe/`
 - `/API/v1/saveProfile/`
 - `/API/v1/getItems/`
-- `/API/v1/createItem/` **=> [♻️]**
-- `/API/v1/createApi/` **=> [♻️]**
+- `/API/v1/createItem/`
+- `/API/v1/createApi/`
 
 ## MVP звершен. Проект заморожен 
