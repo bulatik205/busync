@@ -1,13 +1,18 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../src/Views');
+$twig = new \Twig\Environment($loader, [
+    'cache' => false,
+]);
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', 'HomeController@index');
+    $r->addRoute('GET', '/', 'IndexController');
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -17,17 +22,17 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         http_response_code(404);
+        header('Content-Type: application/json');
         echo json_encode(['error' => 'Not Found']);
         break;
         
     case FastRoute\Dispatcher::FOUND:
-        [$controller, $method] = explode('@', $routeInfo[1]);
+        $controller = $routeInfo[1];
         $params = $routeInfo[2];
         
         require_once __DIR__ . "/../src/Controllers/{$controller}.php";
         
         $instance = new $controller();
-        $response = $instance->$method($params);
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        $instance($params, $twig);
         break;
 }

@@ -1,0 +1,21 @@
+@import url("../base.scss");
+body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+body h1 {
+  font-size: 16px;
+}
+body button {
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  background-color: #000;
+  color: #fff;
+}
+body div {
+  max-width: 500px;
+}/*# sourceMappingURL=styles.css.map */

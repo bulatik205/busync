@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busync</title>
+    <link rel="stylesheet" href="/css/index/styles.css">
+</head>
+<body>
+    <div>
+        <h1>Main route page for development</h1>
+        {% for button in buttons %}
+            <button onclick="window.location.href='/{{ button.href }}'">{{ button.name }}</button>
+        {% else %}
+            <p>Страниц нет</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
