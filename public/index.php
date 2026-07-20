@@ -9,9 +9,10 @@ $twig = new \Twig\Environment($loader, [
     'cache' => false,
 ]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS')
+    exit;
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'IndexController');
 });
 
@@ -25,14 +26,20 @@ switch ($routeInfo[0]) {
         header('Content-Type: application/json');
         echo json_encode(['error' => 'Not Found']);
         break;
-        
+
     case FastRoute\Dispatcher::FOUND:
         $controller = $routeInfo[1];
         $params = $routeInfo[2];
-        
-        require_once __DIR__ . "/../src/Controllers/{$controller}.php";
-        
-        $instance = new $controller();
-        $instance($params, $twig);
+        $controllerPath = __DIR__ . "/../src/Controllers/{$controller}.php";
+
+        if (file_exists($controllerPath)) {
+            require_once $controllerPath;
+            $instance = new $controller();
+            $instance($params, $twig);
+        } else {
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Server error']);
+        }
         break;
 }
