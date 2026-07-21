@@ -4,16 +4,29 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../src/Views');
-$twig = new \Twig\Environment($loader, [
-    'cache' => false,
+use DI\ContainerBuilder;
+
+$containerBuilder = new ContainerBuilder();
+
+$containerBuilder->useAutowiring(true);
+
+$containerBuilder->addDefinitions([
+    Twig\Environment::class => function() {
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../src/Views');
+        return new \Twig\Environment($loader, ['cache' => false]);
+    },
+    
+    'IndexController' => DI\autowire('IndexController'),
+    'AuthController' => DI\autowire('AuthController'),
 ]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS')
-    exit;
+$container = $containerBuilder->build();
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'IndexController');
+    $r->addRoute('GET', '/auth', 'AuthController');    
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -28,18 +41,22 @@ switch ($routeInfo[0]) {
         break;
 
     case FastRoute\Dispatcher::FOUND:
-        $controller = $routeInfo[1];
+        $controllerName = $routeInfo[1];
         $params = $routeInfo[2];
-        $controllerPath = __DIR__ . "/../src/Controllers/{$controller}.php";
-
-        if (file_exists($controllerPath)) {
+        
+        try {
+            $controllerPath = __DIR__ . "/../src/Controllers/{$controllerName}.php";
+            if (!file_exists($controllerPath)) {
+                throw new \Exception("Controller file not found: {$controllerPath}");
+            }
             require_once $controllerPath;
-            $instance = new $controller();
-            $instance($params, $twig);
-        } else {
+
+            $controller = $container->get($controllerName);
+            $controller($params);
+        } catch (\Exception $e) {
             http_response_code(500);
             header('Content-Type: application/json');
-            echo json_encode(['error' => 'Server error']);
+            echo json_encode(['error' => $e->getMessage()]);
         }
         break;
 }

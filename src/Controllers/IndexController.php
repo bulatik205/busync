@@ -1,7 +1,13 @@
 <?php
 class IndexController {
-    public function __invoke($params, $twig) {
-        echo $twig->render('index.twig', [
+    private $twig;
+    
+    public function __construct(Twig\Environment $twig) {
+        $this->twig = $twig;
+    }
+    
+    public function __invoke($params) { 
+        echo $this->twig->render('index.twig', [
             'buttons' => [
                 [
                     'name' => 'Авторизация',
@@ -9,6 +15,5 @@ class IndexController {
                 ]
             ]
         ]);
-        exit;
     }
 }
