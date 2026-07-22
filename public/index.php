@@ -5,9 +5,10 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DI\ContainerBuilder;
+use App\Controllers\IndexController;
+use App\Controllers\AuthController;
 
 $containerBuilder = new ContainerBuilder();
-
 $containerBuilder->useAutowiring(true);
 
 $containerBuilder->addDefinitions([
@@ -16,8 +17,8 @@ $containerBuilder->addDefinitions([
         return new \Twig\Environment($loader, ['cache' => false]);
     },
     
-    'IndexController' => DI\autowire('IndexController'),
-    'AuthController' => DI\autowire('AuthController'),
+    IndexController::class => DI\autowire(),
+    AuthController::class => DI\autowire(),
 ]);
 
 $container = $containerBuilder->build();
@@ -25,8 +26,8 @@ $container = $containerBuilder->build();
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', 'IndexController');
-    $r->addRoute('GET', '/auth', 'AuthController');    
+    $r->addRoute('GET', '/', IndexController::class);
+    $r->addRoute('GET', '/auth', AuthController::class);    
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -41,17 +42,11 @@ switch ($routeInfo[0]) {
         break;
 
     case FastRoute\Dispatcher::FOUND:
-        $controllerName = $routeInfo[1];
+        $controllerClass = $routeInfo[1];
         $params = $routeInfo[2];
         
         try {
-            $controllerPath = __DIR__ . "/../src/Controllers/{$controllerName}.php";
-            if (!file_exists($controllerPath)) {
-                throw new \Exception("Controller file not found: {$controllerPath}");
-            }
-            require_once $controllerPath;
-
-            $controller = $container->get($controllerName);
+            $controller = $container->get($controllerClass);
             $controller($params);
         } catch (\Exception $e) {
             http_response_code(500);
